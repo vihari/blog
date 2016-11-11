@@ -6,8 +6,8 @@
 </description>
     <link>http://yourdomain.com/</link>
     <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 11 Nov 2016 15:41:16 +0530</pubDate>
-    <lastBuildDate>Fri, 11 Nov 2016 15:41:16 +0530</lastBuildDate>
+    <pubDate>Fri, 11 Nov 2016 15:59:41 +0530</pubDate>
+    <lastBuildDate>Fri, 11 Nov 2016 15:59:41 +0530</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
@@ -185,7 +185,7 @@ The general trick is to use linear output and squared error for Gaussian output 
 If not all the neurons initially will produce the same output and hence receive the same gradient, wasting the capacity.&lt;br /&gt;
 The scaling factor controls how small or big the initial weights are. Units with large input (fan-in of the unit) should have smaller weights (I have first-hand experience with problems that arise when this is not done with one of my NN assignments. The initialization that worked smaller number of hidden units just over-shooted due to explosive gradients. That is because the output diverged to a large value when I did this)  &lt;br /&gt;
 The recommendation made is either to sample &lt;em&gt;Uniform(-r,r)&lt;/em&gt;. &lt;br /&gt;
-Where r is &lt;script type=&quot;math/tex&quot;&gt;\sqrt{\frac{6}{fan-in+fan-out}}&lt;/script&gt; for hyperbolic tangent units and  &lt;script type=&quot;math/tex&quot;&gt;4*\sqrt{\frac{6}{fan-in+fan-out}&lt;/script&gt;. fan-in and fan-out are the input and output dimension of a hidden layer.&lt;/li&gt;
+Where r is &lt;script type=&quot;math/tex&quot;&gt;\sqrt{\frac{6}{fan-in+fan-out}}&lt;/script&gt; for hyperbolic tangent units and  &lt;script type=&quot;math/tex&quot;&gt;4*\sqrt{\frac{6}{fan-in+fan-out}}&lt;/script&gt;. fan-in and fan-out are the input and output dimension of a hidden layer.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
@@ -199,7 +199,7 @@ Where r is &lt;script type=&quot;math/tex&quot;&gt;\sqrt{\frac{6}{fan-in+fan-out
   Coordinate descent: Make changes to the each hyper-param one at a time, find the best value for the param and move on to the next one. &lt;br /&gt;
   Mult-resolution search: There is no point in fine-tuning or high-resolution search over large intervals. Do a low-resolution search over several settings and then high-res search over best configurations.&lt;/p&gt;
 
-&lt;h3 id=&quot;limitations-of-deep-learning&quot;&gt;Limitations of Deep Learning&lt;/h3&gt;
+&lt;h2 id=&quot;limitations-of-deep-learning&quot;&gt;Limitations of Deep Learning&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://arxiv.org/pdf/1412.1897.pdf&quot;&gt;DNNs are easy to fool&lt;/a&gt; Surprisingly, DNNs can be easily fooled by adding adverse perturbations to an image. For example, adding noise that is imperceptable to humans to an image that looks like &lt;em&gt;panda&lt;/em&gt; and recognized as one with confidence of ~56% will lead to an image that is wrongly labeled but with very high confidence. This paper details about very interesting case-study of where the state-of-art AlexNet utterly fails. For code and images &lt;a href=&quot;http://www.evolvingai.org/fooling&quot; title=&quot;Deep neural networks are easily fooled: High confidence predictions for unrecognizable images &quot;&gt;see&lt;/a&gt;. There has also been some effort at explaining this phenomena. In the paper: &lt;a href=&quot;https://arxiv.org/pdf/1412.6572v3.pdf&quot; title=&quot;Explaining and Harnessing Adversial Examples&quot;&gt;Explaining and Harnessing Adversial Examples&lt;/a&gt; by Ian Goodfellow et. al., they make a case that such a thing happens majorly because the DNNs are linear in nature.&lt;/li&gt;
 &lt;/ul&gt;
@@ -219,7 +219,7 @@ Where r is &lt;script type=&quot;math/tex&quot;&gt;\sqrt{\frac{6}{fan-in+fan-out
     &lt;ul&gt;
       &lt;li&gt;For any given size of data, the bigger the model, the better it generalized, provided you regularize it well.&lt;/li&gt;
       &lt;li&gt;This is obviously true id your model is an ensemble of smaller models. Adding extra models to the ensemble alwqays helps.&lt;/li&gt;
-      &lt;li&gt;Its a &lt;strong&gt;good idea&lt;/strong&gt; to try to make the data look small by using a big model.&lt;/li&gt;
+      &lt;li&gt;It’s a &lt;strong&gt;good idea&lt;/strong&gt; to try to make the data look small by using a big model.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;Dropout enables the all the models in an ensemble to share knowledge. If there is only one layer in the network with with H, then the model with dropout is an ensemble of 2^H models and softmax over the output layer is geometric mean of all the models in ensemble.&lt;/li&gt;

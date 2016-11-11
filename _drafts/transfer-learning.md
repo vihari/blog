@@ -80,7 +80,12 @@ According to the author, these approaches are surprisingly hard to beat.
   * PRED: Use the output of model trained on SRC data as feature for training on target domain.
   * LinINT: Linearly interpolate the predictions of src and target models while the interpolation params are from dev. data.
   
-  Two models are found to have beat these: 
+  Two models are found to have beat these 
+  * PRIOR: train a model on target data with priors from model trained on source data. 
+    It is about just adding a regularization term like this: $$\lambda{{||w-w_s||}_2}^2$$
+  * By the very author, key idea is to learn three different models: one for each of source, target and general. 
+    The idea is very similar to the work presented in this paper, distinction is made for each example: if it is source specific or general or target-specific or general.
+	The EM algo. presented is quite slow, so this paper is redemtion of sorts.
 
 [RIT'13]: https://arxiv.org/pdf/1403.6382v3.pdf
 [feature-transfer]: /assets/images/feature-transfer13.png

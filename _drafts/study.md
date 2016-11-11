@@ -49,7 +49,7 @@ categories: jekyll update
 	  If not all the neurons initially will produce the same output and hence receive the same gradient, wasting the capacity.
 	  The scaling factor controls how small or big the initial weights are. Units with large input (fan-in of the unit) should have smaller weights (I have first-hand experience with problems that arise when this is not done with one of my NN assignments. The initialization that worked smaller number of hidden units just over-shooted due to explosive gradients. That is because the output diverged to a large value when I did this)  
 	  The recommendation made is either to sample *Uniform(-r,r)*. 
-	  Where r is $$\sqrt{\frac{6}{fan-in+fan-out}}$$ for hyperbolic tangent units and  $$4*\sqrt{\frac{6}{fan-in+fan-out}$$. fan-in and fan-out are the input and output dimension of a hidden layer.
+	  Where r is $$\sqrt{\frac{6}{fan-in+fan-out}}$$ for hyperbolic tangent units and  $$4*\sqrt{\frac{6}{fan-in+fan-out}}$$. fan-in and fan-out are the input and output dimension of a hidden layer.
   
   General advice on finding the best model.  
   Numerical hyper-parameters need to be grid-searched in order to find one. 
@@ -60,7 +60,7 @@ categories: jekyll update
   Coordinate descent: Make changes to the each hyper-param one at a time, find the best value for the param and move on to the next one. 
   Mult-resolution search: There is no point in fine-tuning or high-resolution search over large intervals. Do a low-resolution search over several settings and then high-res search over best configurations.
 	  
-### Limitations of Deep Learning ###
+## Limitations of Deep Learning ##
   * [DNNs are easy to fool][easy-fool-dnn] Surprisingly, DNNs can be easily fooled by adding adverse perturbations to an image. For example, adding noise that is imperceptable to humans to an image that looks like *panda* and recognized as one with confidence of ~56% will lead to an image that is wrongly labeled but with very high confidence. This paper details about very interesting case-study of where the state-of-art AlexNet utterly fails. For code and images [see][easy-fool-dnn-site]. There has also been some effort at explaining this phenomena. In the paper: [Explaining and Harnessing Adversial Examples][Ian-why-easy-fool] by Ian Goodfellow et. al., they make a case that such a thing happens majorly because the DNNs are linear in nature.
 
 ## Wisdom from random sources ##
@@ -73,7 +73,7 @@ categories: jekyll update
 * Big models are good (Something that statisticians do not believe but true)
     * For any given size of data, the bigger the model, the better it generalized, provided you regularize it well.
 	* This is obviously true id your model is an ensemble of smaller models. Adding extra models to the ensemble alwqays helps.
-	* Its a **good idea** to try to make the data look small by using a big model.
+	* It's a **good idea** to try to make the data look small by using a big model.
  * Dropout enables the all the models in an ensemble to share knowledge. If there is only one layer in the network with with H, then the model with dropout is an ensemble of 2^H models and softmax over the output layer is geometric mean of all the models in ensemble.   
  * Dropout can be seen as bernoulli noise, we do not change the expected value because a neuron either emits zero or twice the value. It is noted that any other kind of noise can work just as well. Gaussian noise and Possion noise are tested to give same performance if not better. In these cases a multiplicative noise with standard deviation equal to the activity. The point is that neurons do not share real values but spikes and that is a lot better than trhe actuaol values.
  * In this lecture, Hinton goes on lengths elaborating why brains cannot do exact back-propagation and explains possible other ways in which it could be learning the weights. He argues that neurons in a feed-back loop can do away with the need to back-propagate by considering the difference between the inout at this instance and previous one (plasticity of brain, Spike-time dependent plasticity)
