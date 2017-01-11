@@ -78,6 +78,69 @@ categories: jekyll update
  * Dropout can be seen as bernoulli noise, we do not change the expected value because a neuron either emits zero or twice the value. It is noted that any other kind of noise can work just as well. Gaussian noise and Possion noise are tested to give same performance if not better. In these cases a multiplicative noise with standard deviation equal to the activity. The point is that neurons do not share real values but spikes and that is a lot better than trhe actuaol values.
  * In this lecture, Hinton goes on lengths elaborating why brains cannot do exact back-propagation and explains possible other ways in which it could be learning the weights. He argues that neurons in a feed-back loop can do away with the need to back-propagate by considering the difference between the inout at this instance and previous one (plasticity of brain, Spike-time dependent plasticity)
 
+## Debugging in Tensorflow ##
+Debugging or even understanding a tensorflow code can be a daunting task. 
+Here in this section, I will share some tricks of trade.
+
+### [A practical guide to debugging tensorflow codes][tf-debug]
+  * Use `Session.run()` on tensorflow variables.
+  * Use off-the-shelf tensorboard to compute the variable summaries.
+  * `tf.print()`: some control can be execrised through the paramaters of this method such as `first_n`, number of lines to print before breaking, message and summarizer. Behaves like an identity operation with the side-effect of printing.
+  * `tf.Assert()` is also on the same lines, print when a condition is met. In the end, this need to be evaluated with `session.run()`. One trick is to add all asserts to a collection with: `tf.add_to_collection('Asserts', tf.Assert(...))` and in the end: `assert_op = tf.group(*tf.get_collections('Asserts'))` and `session.run(assert_op)`.
+  * How about python debuggers: `pdb`, `ipdb`, `pudb`.
+
+Some usefule Tensorflow APIs:
+  * `tf.get_default_graph()` Get the current (default) graph
+  * `G.get_operations, G.get_operations_by_name(name),G.get_tensor_by_name(name), tf.get_collection(tf.GraphKeys.~~)` gets all operations (sometimes by name) or tensors or collection
+  * `tf.trainable_variables()` list all the trainable variables and likewise `tf.global_variables()`
+  * `[t = tf.verify_tensor_all_finite(t, msg)][tf-doc-controlflow]`, `tf.add_check_numerics_ops()`
+  * Naming all the tensors and ops can help in pointing where the problem is when looking at stacktrace.
+
+**Advanced**
+  * It is possible to interpose any python code in computation graph by wrapping a tensorflow operation around the function with: `tf.py_func()`. 
+Consider the following example (https://wookayin.github.io/TensorflowKR-2016-talk-debugging/#57):
+  * https://wookayin.github.io/TensorflowKR-2016-talk-debugging/#75
+
+```python
+def multilayer_perceptron(x):
+    fc1 = layers.fully_connected(x, 256, activation_fn=tf.nn.relu, scope='fc1')
+    fc2 = layers.fully_connected(fc1, 256, activation_fn=tf.nn.relu, scope='fc2')
+    out = layers.fully_connected(fc2, 10, activation_fn=None, scope='out')
+    def _debug_print_func(fc1_val, fc2_val):
+        print 'FC1 : {}, FC2 : {}'.format(fc1_val.shape, fc2_val.shape)
+        print 'min, max of FC2 = {}, {}'.format(fc2_val.min(), fc2_val.max())
+        return False
+    debug_print_op = tf.py_func(_debug_print_func, [fc1, fc2], [tf.bool])
+    with tf.control_dependencies(debug_print_op):
+        out = tf.identity(out, name='out')
+    return out
+```
+  * The [tdb][tdb] library
+  * `tfdbg`: the official debugger from TF. [Dec. 2016]
+
+## [tfdbg][TFDBG]
+The debugger from tensorflow can be handy.
+
+It can be used to see the values of the nodes in the computation graph at runtime.
+It can also be used to quicly figure out where a bug is: such as a variable not initialized, inf or nan values or shape mismatch in matrix multiplication with pre-fedined filters: `uninitialized_variable`, `has_inf_or_nan`, `shape_filter` respectively.
+
+It is possible to wrap the tensorflow session to debug along with filters to quicly figure where things are going wrong.
+It works a gdb session and the interactive session supports: mouse clicks,  which can be turned off with `mouse off`, history upon up-arrow and tab completions.
+
+Include the following linesr to enable interactive debugging (the tool is more helpful if all the ops and variables are properly named)
+
+```python
+from tensorflow.python import debug as tf_debug
+
+if FLAGS.debug:
+        session = tf_debug.LocalCLIDebugWrapperSession(session)
+        session.add_tensor_filter("has_inf_or_nan", tf_debug.has_inf_or_nan)
+```
+
+At the time of writing this, the module is experimental and buggy. 
+For example, it failed on BasicLSTMCell with the error: `AttributeError: 'LSTMStateTuple' object has no attribute 'name'`.
+I don't get it completely, but it looks like it is trying to find name attribute of LSTMCell which is not defined by default.
+
 [easy-fool-dnn]: https://arxiv.org/pdf/1412.1897.pdf
 [easy-fool-dnn-site]: http://www.evolvingai.org/fooling "Deep neural networks are easily fooled: High confidence predictions for unrecognizable images "
 [Ian-why-easy-fool]: https://arxiv.org/pdf/1412.6572v3.pdf "Explaining and Harnessing Adversial Examples"
@@ -87,3 +150,10 @@ categories: jekyll update
 
 [geoffrey-stanford]: https://www.youtube.com/watch?v=VIRCybGgHts "Can the Brain do back-propagation?"
 
+[tf-debug]: https://wookayin.github.io/TensorflowKR-2016-talk-debugging "A practical guide to debugging tensorflow codes"
+
+[tdb]: https://github.com/ericjang/tdb
+
+[TFDBG]: https://www.tensorflow.org/versions/master/how_tos/debugger/ "TensorFlow Debugger (tfdbg) Command-Line-Interface Tutorial: MNIST"
+
+[tf-doc-controlflow]: https://www.tensorflow.org/api_docs/python/control_flow_ops/debugging_operations#verify_tensor_all_finite "Debugging Operations"

@@ -1,14 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Your awesome title</title>
+    <title>My notes</title>
     <description>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
 </description>
-    <link>http://yourdomain.com/</link>
-    <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 11 Nov 2016 15:59:41 +0530</pubDate>
-    <lastBuildDate>Fri, 11 Nov 2016 15:59:41 +0530</lastBuildDate>
-    <generator>Jekyll v3.0.1</generator>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 11 Jan 2017 20:16:24 +0530</pubDate>
+    <lastBuildDate>Wed, 11 Jan 2017 20:16:24 +0530</lastBuildDate>
+    <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title>Literature Survey on Adaptive Learning in the context of neural networks</title>
+        <description>&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;Adaptation of neural network models in the context of speech, speaker adaptation, is well researched. 
+Acoustic models have evolved starting from GMM or HMM models to hybrid models that are NN/HMM, deep neural networks to LSTM based RNN models.
+The problem of low performance due to train and test domain differences is acute in speech and is well addressed in the past even before the introduction of neural networks.
+In this post, we shall only discuss the domain adaptation problem only in the context of neural nets.&lt;/p&gt;
+
+&lt;h2 id=&quot;speaker-adaptation-of-hybrid-nnhmm-based-on-speaker-codesspeaker-code&quot;&gt;&lt;a href=&quot;http://ieeexplore.ieee.org/document/6639211/&quot; title=&quot;Fast speaker adaptation of hybrid NN/HMM model for speech recognition based on discriminative learning of speaker code&quot;&gt;Speaker Adaptation of hybrid NN/HMM based on speaker codes&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;In a NN/HMM model, the GMM component that is used to estimate the emission probabilities of each state is replaced by neural network which when fed with the features vector outputs the posterior over HMM state labels.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/speaker-code-fig1.png&quot; alt=&quot;speaker-code-fig1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As shown in the image above, the proposed adaptation method relies on learning adaptation NN and speaker codes.
+All weights of adaptation NN are standard fully connected layers.
+The transformed feature vector should have the same dimension as the input feature vector.
+During the adaptation phase, both the weights of adaptation NN and speaker need to be learned.&lt;/p&gt;
+
+&lt;h3 id=&quot;training&quot;&gt;Training&lt;/h3&gt;
+
+&lt;p&gt;The training of speaker independent model and adaptive NN along with speaker code is carried in two separate steps.
+Speaker Independent (SI) model is learned as if adapt NN does not exist, that is standard NN-HMM model is trained without using any speaker specific information.&lt;br /&gt;
+Once the SI model is trained, its weights are freezed and speaker code and adaptNN weights are learned jointly with back-propagation to optimize frame-wise classification performance.&lt;br /&gt;
+Acknowledges that there are several other plausible ways of training the network, but do not provide any rationale as to why this method was choosen as such.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;it is possible to tweak the weights of SI model when optimizing for speaker codes and adaptNN weights.&lt;/li&gt;
+  &lt;li&gt;Learn all the three parameters jointly. “However, this may result in two inseparable NNs and they eventually become one large deep NN with only a number of lower layers receiving a speaker code.”&lt;/li&gt;
+  &lt;li&gt;Another possibility is to learn SI model over the features transformed with adaptNN that is learned, that is to flip the order in which we train.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;adaptation&quot;&gt;Adaptation&lt;/h3&gt;
+
+&lt;p&gt;During this phase, only the speaker code is to be learned for the new speaker over the small amount of data available for adaptation.
+This is one of the strong points of this work that the speaker code can be arbitrarily made small or large depending on how much data is available for adaptation.
+We do the same, BP, but adaptNN weights are freezed as well.&lt;/p&gt;
+
+&lt;h3 id=&quot;interesting-experiments&quot;&gt;Interesting experiments&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/speaker-code-fig2.png&quot; alt=&quot;fig2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The figure above shows the effect of number of examples used for estimating speaker code on performance.&lt;br /&gt;
+The experiment was conducted on a 462 speaker training set and 24-speaker test set.
+The test set each contain eight utterances per user.
+The learning rate, context window are al fixed, hidden layer width (1000), speaker code size (50), 183 target class labels and feature vector dimension (??) are all fixed.&lt;/p&gt;
+
+&lt;p&gt;Note&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;“Dummy” is when no speaker code, but only dummy layers – does not affect the performance meaning that the perf. improvement is not just increased model complexity.&lt;/li&gt;
+  &lt;li&gt;using zero adaptation has some positve effect.&lt;/li&gt;
+  &lt;li&gt;Even when exposed to one utterance, the perf. improvement is not bad.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;using-i-vector-inputs-to-improve-speaker-independence&quot;&gt;&lt;a href=&quot;http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6853591&quot; title=&quot;IMPROVING DNN SPEAKER INDEPENDENCE WITH I-VECTOR INPUTS&quot;&gt;Using I-Vector inputs to improve speaker independence&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Leveraging utterance-level features as inputs to DNN to facilitate speaker, channel and background normalization.&lt;/p&gt;
+
+&lt;h3 id=&quot;i-vectors-or-identity-vectors&quot;&gt;i-Vectors or identity vectors&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;“i-vectors encode precisely those effects to which we want our ASR system to be invariant: speaker, channel and background noise.”&lt;/strong&gt;
+These vectors are generally used in speaker recognition and verification&lt;/p&gt;
+
+&lt;h3 id=&quot;adapting-with-i-vectors&quot;&gt;Adapting with i-vectors&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/google-ivector-fig1.png&quot; alt=&quot;google-ivec-fig1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As shown in the image above, the idea is to provide the input with characterisation of the speaker should enable it to normalise the signal with respect to them and thus better able to make its outputs invariant to them.&lt;/p&gt;
+
+&lt;h3 id=&quot;experiments&quot;&gt;Experiments&lt;/h3&gt;
+
+&lt;p&gt;The training and dev set performance differed when the input is compounded with the 300 dimensional i-vector. 
+This could mean that the network is over-fitting the i-vectors or it could also be that the computing a 300-dim vector from short utterances is not relaiable.&lt;/p&gt;
+
+&lt;p&gt;Reducing the i-vector dimension to say 20 helped and also l2 regularization (with &lt;script type=&quot;math/tex&quot;&gt;10^{-7}, 10^{-6}&lt;/script&gt; regularization coeffs) helped too.&lt;/p&gt;
+
+&lt;p&gt;The dataset contains 80 speakers with an equivalent of 10 minutes of utterance per user.
+The input augmentation with 20-dimensional i-vector model along with re-training on the adaptation set with l2 reg. coeff of 0.01 improved the results further.&lt;/p&gt;
+
+&lt;h2 id=&quot;speaker-adaptive-deep-neural-networks&quot;&gt;&lt;a href=&quot;https://www.cs.cmu.edu/~ymiao/pub/tasl_sat.pdf&quot; title=&quot;Towards Speaker Adaptive Training of Deep Neural Network Acoustic Models&quot;&gt;Speaker adaptive deep neural networks&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Two different model architextures are tries with: AdaptNN and iVecNN.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/ivecNN.png&quot; alt=&quot;models&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;iVecNN works by producing a linear feature shift which is added to the original feature vector and is activated with a linear activation function.&lt;br /&gt;
+&lt;script type=&quot;math/tex&quot;&gt;a_t = o_t+f(i_s)&lt;/script&gt;&lt;br /&gt;
+The weights of iVecNN are estimated using BP while the weights of the initial DNN are estimated and fixed.&lt;/p&gt;
+
+&lt;p&gt;The strong point of this method is its relevance to CNNs.&lt;/p&gt;
+
+&lt;p&gt;In the figure above, &lt;script type=&quot;math/tex&quot;&gt;z_t&lt;/script&gt; is the elemnt-wise sum of &lt;script type=&quot;math/tex&quot;&gt;o_t&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;y_s^{-1}&lt;/script&gt;.
+For two speakers in the training set, two principal components from PCA are plotted as shown in the image below. 
+Observe that the non-overlapping regions has shrunk for the case of &lt;script type=&quot;math/tex&quot;&gt;z_t&lt;/script&gt; when compared to &lt;script type=&quot;math/tex&quot;&gt;o_t&lt;/script&gt; implying that adding a linear shift to the original vector is actually making the speaker independent.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/speaker-indep-ivecNN.png&quot; alt=&quot;speaker independence&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The training pipeline of the system is shown below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/ivecNN-pipeline.png&quot; alt=&quot;pipeline&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;They did show that the model is better than DNN+i-vector, that is the augmented input, the first model in this article, and concluded that this model is better than the other.
+However, the experiment was not set right, the i-vectors are not normalized and i-vector size is not varied.
+I am not including results because I did not like them. (I have some issues with how the experiment was set-up)&lt;/p&gt;
+
+&lt;h1 id=&quot;adaptation-in-the-context-of-hand-writing-recognition&quot;&gt;Adaptation in the context of hand writing recognition&lt;/h1&gt;
+
+&lt;p&gt;I have not come across any work that adapts hand writing recognition to a user. 
+There is some interest in recognizing what is called as unconstrained hand writing recognition task which is recognizing hand written characters with no restrictions imposed on their style, size, position and medium.&lt;/p&gt;
+
+&lt;h2 id=&quot;generating-sequences-with-recurrent-neural-networksgen-hw&quot;&gt;&lt;a href=&quot;https://arxiv.org/pdf/1308.0850v5.pdf&quot; title=&quot;Generating Sequences With Recurrent Neural Networks&quot;&gt;Generating Sequences With Recurrent Neural Networks&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;This work is an interesting read, although it does not explicitly make user modeling.
+The model can generate hand writen sentences that resemble the ones written by human.
+Also interesting is that it is possible to tune the style of the generated sentence instead of randomly choosing one.
+This work demonstrates that it is possible to generate such writings one point at a time with RNNs that are also consistent with a style.&lt;/p&gt;
+
+&lt;p&gt;Unlike others, no pre-processing of the data (online data) is made.
+According to them, pre-processing will normalize and removes variance in the input and will lead an output that is more synthetic.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-novel-connectionist-system-for-unconstrained-handwriting-recognitiongarves-09&quot;&gt;&lt;a href=&quot;http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=4531750&quot; title=&quot;A Novel Connectionist System for Unconstrained Handwriting Recognition&quot;&gt;A Novel Connectionist System for Unconstrained Handwriting Recognition&lt;/a&gt;&lt;/h2&gt;
+
+</description>
+        <pubDate>Tue, 13 Dec 2016 14:36:37 +0530</pubDate>
+        <link>http://localhost:4000/deep-learning/speaker-adaption/adaptive-neural-networks/2016/12/13/NN_adaptation.html</link>
+        <guid isPermaLink="true">http://localhost:4000/deep-learning/speaker-adaption/adaptive-neural-networks/2016/12/13/NN_adaptation.html</guid>
+        
+        
+        <category>deep-learning</category>
+        
+        <category>speaker-adaption</category>
+        
+        <category>adaptive-neural-networks</category>
+        
+      </item>
     
       <item>
         <title>Welcome to Jekyll!</title>
@@ -21,15 +157,15 @@
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
   &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Tom&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &#39;Hi, Tom&#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 25 Oct 2016 16:42:25 +0530</pubDate>
-        <link>http://yourdomain.com/jekyll/update/2016/10/25/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/jekyll/update/2016/10/25/welcome-to-jekyll.html</guid>
+        <link>http://localhost:4000/jekyll/update/2016/10/25/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://localhost:4000/jekyll/update/2016/10/25/welcome-to-jekyll.html</guid>
         
         
         <category>jekyll</category>
@@ -44,20 +180,20 @@
 
 &lt;h2 id=&quot;cnn-features-off-the-shelf-an-astounding-baseline-for-recognitionrit13&quot;&gt;&lt;a href=&quot;https://arxiv.org/pdf/1403.6382v3.pdf&quot;&gt;CNN Features off-the-shelf: an Astounding Baseline for Recognition&lt;/a&gt;&lt;/h2&gt;
 
-&lt;p&gt;This paper explores the potential of features generated by Convolutional Neural Network by using the features learned by Overfeat model for object classification task in ILSVRC13.  &lt;br /&gt;
+&lt;p&gt;This paper explores the potential of features generated by Convolutional Neural Network by using the features learned by Overfeat model for object classification task in ILSVRC13.&lt;br /&gt;
 The features are appllied for various tasks such as &lt;em&gt;object classification, fine-grained recognition, scene recognition, attribute detection (for example attributes of pedestrians from a cam feed that is if they are wearing a hat, shoe, trouser, jeans etc.) and scene retrieval&lt;/em&gt;.&lt;/p&gt;
 
 &lt;h3 id=&quot;object-recognition&quot;&gt;Object recognition&lt;/h3&gt;
 
-&lt;p&gt;Is the task of assigning labels (possibly more than one) to a given image. &lt;br /&gt;
-Since the features used are learned over a similar task, better results are expected. &lt;br /&gt;
-They tried on PASCAL VOM and MIT indoor dataset both of which are considered harder than ImageNet.  &lt;br /&gt;
-The mean Average Precision(mAP) over all the classes on PASCAL VOM is 77.2, which is 7 point more than second best. &lt;br /&gt;
+&lt;p&gt;Is the task of assigning labels (possibly more than one) to a given image. 
+Since the features used are learned over a similar task, better results are expected. 
+They tried on PASCAL VOM and MIT indoor dataset both of which are considered harder than ImageNet.&lt;br /&gt;
+The mean Average Precision(mAP) over all the classes on PASCAL VOM is 77.2, which is 7 point more than second best. 
 Thing to note is that, Oquab et.al. fixes all the layers trained on ImageNet and then it adds and optimized two fully-connected layers on VOC dataset with &lt;strong&gt;77.7&lt;/strong&gt; mAP.&lt;/p&gt;
 
 &lt;h3 id=&quot;object-detection&quot;&gt;Object Detection&lt;/h3&gt;
 
-&lt;p&gt;This is about recognising and also putting a box around the object.&lt;br /&gt;
+&lt;p&gt;This is about recognising and also putting a box around the object.
 With off-the-shelf features: &lt;strong&gt;46.2&lt;/strong&gt; mAP (Girshick et.al.) and when fine-tuned on PASCAL VOC it is &lt;strong&gt;53.1&lt;/strong&gt;.&lt;/p&gt;
 
 &lt;p&gt;The graph below summarizes the contribution of this paper.&lt;/p&gt;
@@ -66,28 +202,54 @@ With off-the-shelf features: &lt;strong&gt;46.2&lt;/strong&gt; mAP (Girshick et.
 
 &lt;h2 id=&quot;decafdecaf&quot;&gt;&lt;a href=&quot;https://arxiv.org/pdf/1310.1531v1.pdf&quot;&gt;DeCAF&lt;/a&gt;&lt;/h2&gt;
 
-&lt;p&gt;This work is quite similar to the above one. &lt;br /&gt;
-The features are extracted from the &lt;a href=&quot;https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf&quot; title=&quot;ImageNet classification with deep convolutional neural networks. &quot;&gt;AlexNet&lt;/a&gt; which contains 5 convolutional layers (not inluding pooling) followed b7y two fully connnected layers.  &lt;br /&gt;
-Features are extracted from the output of 5th, 6th and 7th layer; notice that 7th is last but one layer and 5th has only convolutional layers. &lt;br /&gt;
-AlexNet has dropout in layers 6 and 7. &lt;br /&gt;
+&lt;p&gt;This work is quite similar to the above one. 
+The features are extracted from the &lt;a href=&quot;https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf&quot; title=&quot;ImageNet classification with deep convolutional neural networks. &quot;&gt;AlexNet&lt;/a&gt; which contains 5 convolutional layers (not inluding pooling) followed b7y two fully connnected layers.&lt;br /&gt;
+Features are extracted from the output of 5th, 6th and 7th layer; notice that 7th is last but one layer and 5th has only convolutional layers. 
+AlexNet has dropout in layers 6 and 7. 
 Experiments were carried on the tasks of Object detection, fine-grained recognition, domain adaptation and scene recognition.&lt;/p&gt;
 
 &lt;h3 id=&quot;object-recognition-1&quot;&gt;Object Recognition&lt;/h3&gt;
 
-&lt;p&gt;It is found in their experiments that logistic Regression or linear SVM on these features already beat methods that involve task-specific features with SVM using multiple kernels by around 2-3% on mean accuracy.&lt;br /&gt;
-Things to note, the mean accuracy was around 33% when the training set contains only one example per class. &lt;br /&gt;
-&lt;em&gt;The performance of the system on 7th level features is slightly less (by 2%) when compared to 6th level feature.&lt;/em&gt;&lt;br /&gt;
-Dropout on layers: 6/7 improves perf. by 0-2%.&lt;br /&gt;
+&lt;p&gt;It is found in their experiments that logistic Regression or linear SVM on these features already beat methods that involve task-specific features with SVM using multiple kernels by around 2-3% on mean accuracy.
+Things to note, the mean accuracy was around 33% when the training set contains only one example per class. 
+&lt;em&gt;The performance of the system on 7th level features is slightly less (by 2%) when compared to 6th level feature.&lt;/em&gt;
+Dropout on layers: 6/7 improves perf. by 0-2%.
 This method beats two-layer convolution network trained on only the task-specific training data by 20%.&lt;/p&gt;
+
+&lt;h3 id=&quot;domain-adaptation&quot;&gt;Domain Adaptation&lt;/h3&gt;
+
+&lt;p&gt;This entire work is a kind of domain adapatation. 
+This section explores domain apaptability of featutures extracted from Conv. layers.
+In this task, the features are compared over their perf. on multi-class accuracy on ffice dataset collected from Amamzon, webcam and camera snapshots.
+The ConvNet features beat SURF features by a large margin which means that this hand-engineered feature do not represent all the knowledge required to classify as well as convNet layers. 
+The fact that logistic regression over source, target or combined data did not perform well and Daume III (next section) and SVM did well means that there are several features that are specific to a certain domain and feature reweightinghelps to increase the performance from &lt;strong&gt;75.30&lt;/strong&gt; for best performing log. regr. model to Daume III.&lt;/p&gt;
+
+&lt;p&gt;The table below is an interesting read. 
+Observe that the in the case of Dslr&lt;script type=&quot;math/tex&quot;&gt;\rightarrow&lt;/script&gt;webcam, the performance of log. regression model when trained on source data is better than when trained on target data. 
+This indicates that the domains are not very different which is understandable since they only differ in resolution. 
+Due to this, Daume III did not do any better than logistic regression on source and target data combined.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/decaf-domain-adapt.png&quot; alt=&quot;Domain Adaptation with AlexNet features&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;how-transferable-are-features-in-deep-neural-networkstransfer-bengio-14&quot;&gt;&lt;a href=&quot;https://arxiv.org/abs/1411.1792&quot;&gt;How transferable are features in deep neural networks?&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Unlike other papers that measure transfer of features from ImageNet to various image-processing task, this work takes a different approach. 
+Transfer learning is tested on mutually exludive splits of ImageNet data containing 1000 classes. 
+The 1000 class collection is either split randomly that is both the splits still contain 1000 classes but the examples in each class will be shared equally between them.&lt;/p&gt;
+
+&lt;p&gt;In a different experiment, the data is split to form two sets that are very different from other.
+The 1000 classes are split into almost equal sets based on if it is man-made or natural, we will refer to this split as non-random split.&lt;/p&gt;
+
+&lt;p&gt;The effect of coadaptation when using features from different layers is isolated, thet is when we are using features from say a 4th or 5th layer in a seven layer netweork then, the activations of this layer might have co-adapted with the next layer.&lt;/p&gt;
 
 &lt;h2 id=&quot;frustratingly-easy-domain-adaptationeasyadapt&quot;&gt;&lt;a href=&quot;http://www.umiacs.umd.edu/~hal/docs/daume07easyadapt.pdf&quot; title=&quot;Frustratingly Easy Domain Adaptation&quot;&gt;Frustratingly Easy Domain Adaptation&lt;/a&gt;&lt;/h2&gt;
 
-&lt;p&gt;This is a 2007 paper that propses a simple pre-processing trick for easy adaptation. &lt;br /&gt;
-The DeCAF paper reports best results in the task of domain adaptation from Amazon images -&amp;gt; webcam images using the features from AlexNet and this method. &lt;br /&gt;
-That interested me to study this further.&lt;br /&gt;
+&lt;p&gt;This is a 2007 paper that propses a simple pre-processing trick for easy adaptation. 
+The DeCAF paper reports best results in the task of domain adaptation from Amazon images -&amp;gt; webcam images using the features from AlexNet and this method. 
+That interested me to study this further.
 Let me start with the simple code.&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#source: http://hal3.name/easyadapt.pl.gz&lt;/span&gt;
+&lt;div class=&quot;language-perl highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#source: http://hal3.name/easyadapt.pl.gz&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@ARGV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$ARGV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;&amp;lt;F&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -101,28 +263,59 @@ Let me start with the simple code.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Consider the case where there is a loads of data in one domain but is different from the domain that we want to use it in. &lt;br /&gt;
-For example, we might want a PoS tagger trained on NewsWire to work on hardware blogs. &lt;br /&gt;
-That is, we have data from source domain and some amount of data from target domain; there are sevearal standard ways to adapt in such a case. &lt;br /&gt;
+&lt;p&gt;The snippet above has the following input-output characteristics.&lt;/p&gt;
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;====File 1====
+x a v f
+y a c d
+===File 2===
+x d f
+y g d f
+===Output===
+x *a 0a *v 0v *f 0f
+y *a 0a *c 0c *d 0d
+x *d 1d *f 1f
+y *g 1g *d 1d *f 1f
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;The output needs to be further processed before it is used, more specifically any symbol in input that starts with * is general and starting with ‘%d’ belongs to that number slot in the input.&lt;/p&gt;
+
+&lt;p&gt;Consider the case where there is a loads of data in one domain but is different from the domain that we want to use it in. 
+For example, we might want a PoS tagger trained on NewsWire to work on hardware blogs. 
+That is, we have data from source domain and some amount of data from target domain; there are sevearal standard ways to adapt in such a case. 
 According to the author, these approaches are surprisingly hard to beat.&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;SRCOnly: A single model is trained on only data from source data alone ignoring target data.&lt;/li&gt;
   &lt;li&gt;TGTOnly: Model trained only on target data alone&lt;/li&gt;
-  &lt;li&gt;ALL: A model is trained on both the source and target domain. &lt;br /&gt;
-Can wash away the effects of target data since it is small relatively.&lt;br /&gt;
-For this reason, the source data eaxamples are weighed down by that factor to bring balance. &lt;br /&gt;
+  &lt;li&gt;ALL: A model is trained on both the source and target domain. 
+Can wash away the effects of target data since it is small relatively.
+For this reason, the source data eaxamples are weighed down by that factor to bring balance. 
 WEIGHT is our next baseline which chooses the scaling factor of source examples by CV.&lt;/li&gt;
   &lt;li&gt;PRED: Use the output of model trained on SRC data as feature for training on target domain.&lt;/li&gt;
   &lt;li&gt;LinINT: Linearly interpolate the predictions of src and target models while the interpolation params are from dev. data.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Two models are found to have beat these:&lt;/p&gt;
+&lt;p&gt;Two models are found to have beat these&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;PRIOR: train a model on target data with priors from model trained on source data. 
+It is about just adding a regularization term like this: &lt;script type=&quot;math/tex&quot;&gt;\lambda{\lvert\lvert{w-w_s}\rvert\rvert _2}^2&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;By the very author, key idea is to learn three different models: one for each of source, target and general. 
+The idea is very similar to the work presented in this paper, distinction is made for each example: if it is source specific or general or target-specific or general.
+The EM algo. presented is quite slow, so this paper is redemtion of sorts.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This work presents a simple augmentation of data that transforms source and target data differently with &lt;script type=&quot;math/tex&quot;&gt;\phi^s(\mathbf{x})&lt;/script&gt;=&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+&lt;\mathbf x,\mathbf x,0&gt; %]]&gt;&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\phi^t(\mathbf{x})&lt;/script&gt;=&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+&lt;\mathbf x,0,\mathbf x&gt; %]]&gt;&lt;/script&gt;.
+The intuition is that any by replicating the feature space thrice one for general, source-specific and target-specific, the features that are specific to say target or source will remain in their respective dimensions and common ones in the general dimension.&lt;/p&gt;
+
+&lt;p&gt;An interesting takeaway is that things did not go south because of teh increased dimensionality of feature space. 
+The methodfailed to perform in cases where the source and target domains did not differ by much.&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 25 Oct 2016 16:42:25 +0530</pubDate>
-        <link>http://yourdomain.com/deep-learning/transfer-learning/2016/10/25/transfer-learning.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/deep-learning/transfer-learning/2016/10/25/transfer-learning.html</guid>
+        <link>http://localhost:4000/deep-learning/transfer-learning/2016/10/25/transfer-learning.html</link>
+        <guid isPermaLink="true">http://localhost:4000/deep-learning/transfer-learning/2016/10/25/transfer-learning.html</guid>
         
         
         <category>deep-learning</category>
@@ -137,66 +330,66 @@ WEIGHT is our next baseline which chooses the scaling factor of source examples 
 
 &lt;ul&gt;
   &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1206.5533v2.pdf&quot; title=&quot;Practical Recommendations for Gradient-Based Training of Deep Architectures&quot;&gt;Recommendations by Y. Bengio&lt;/a&gt;  &lt;br /&gt;
-  The recommendations are not definitive and should be challenged.&lt;br /&gt;
-  They can work as a good starting point.  &lt;br /&gt;
-  It has been shown that use of computer clusters for hyper-parameter selection can have an important effect on results. &lt;br /&gt;
-  The value of sopme hyper-parameters can be selected based on its performance on training data, but most cannot. For any hyper-parameter that affects the capacity of the learner, it makes more sense to use an out-of-sample data to select the params, hence the validation set.  &lt;br /&gt;
+    &lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1206.5533v2.pdf&quot; title=&quot;Practical Recommendations for Gradient-Based Training of Deep Architectures&quot;&gt;Recommendations by Y. Bengio&lt;/a&gt;&lt;br /&gt;
+  The recommendations are not definitive and should be challenged.
+  They can work as a good starting point.&lt;br /&gt;
+  It has been shown that use of computer clusters for hyper-parameter selection can have an important effect on results. 
+  The value of sopme hyper-parameters can be selected based on its performance on training data, but most cannot. For any hyper-parameter that affects the capacity of the learner, it makes more sense to use an out-of-sample data to select the params, hence the validation set.&lt;br /&gt;
   	&amp;gt; different researchers and research groups do not always agree on the practice of training neural networks&lt;/p&gt;
 
     &lt;ul&gt;
       &lt;li&gt;&lt;strong&gt;Initial Learning rate (&lt;script type=&quot;math/tex&quot;&gt;\epsilon_0&lt;/script&gt;)&lt;/strong&gt; is the single most important hyp. param. according to him. &lt;code class=&quot;highlighter-rouge&quot;&gt;If there is only time to optimize one hyper-parameter and one uses stochastic gradient descent, then this is the hyper-parameter that is worth tuning.&lt;/code&gt; Typical values for neural networks is: 1E-6 to 1 that is if the input is properly normalized to lie between 0 and 1. A default value of 0.01 typically works for multi-layer neural network.&lt;/li&gt;
       &lt;li&gt;
-        &lt;p&gt;&lt;strong&gt;Learning rate schedule&lt;/strong&gt;: The general strategy is to keep the learning rate constant until some iterations as shown in the equation below. In many cases choosing other than the default value for &lt;script type=&quot;math/tex&quot;&gt;\tau\rightarrow \infty&lt;/script&gt; has very little effect. &lt;br /&gt;
+        &lt;p&gt;&lt;strong&gt;Learning rate schedule&lt;/strong&gt;: The general strategy is to keep the learning rate constant until some iterations as shown in the equation below. In many cases choosing other than the default value for &lt;script type=&quot;math/tex&quot;&gt;\tau\rightarrow \infty&lt;/script&gt; has very little effect. 
 There are suggestions to decrease the learning rate less steeply than linear after &lt;script type=&quot;math/tex&quot;&gt;\tau&lt;/script&gt; time steps that is &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-O(1/t^\alpha), \alpha&lt;1 %]]&gt;&lt;/script&gt; depending on the convex behaviour of the function being optimized.&lt;br /&gt;
+O(1/t^\alpha), \alpha&lt;1 %]]&gt;&lt;/script&gt; depending on the convex behaviour of the function being optimized.
 Adaptive strategies for learning rate exist.&lt;/p&gt;
 
         &lt;script type=&quot;math/tex; mode=display&quot;&gt;\epsilon_t=\frac{\epsilon_0 \tau}{max(t,\tau)}&lt;/script&gt;
       &lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Mini-batch size (B)&lt;/strong&gt;: In theory, this hyp. param. should only affect the training time and not performance. Typically, B is a value between 1 and a few hundred. A value of 32 is good because it can take implementational advantages that matrix-matrix product are more efficient than matrix-vector and is not too high to require a long training time. &lt;br /&gt;
+      &lt;li&gt;&lt;strong&gt;Mini-batch size (B)&lt;/strong&gt;: In theory, this hyp. param. should only affect the training time and not performance. Typically, B is a value between 1 and a few hundred. A value of 32 is good because it can take implementational advantages that matrix-matrix product are more efficient than matrix-vector and is not too high to require a long training time. 
 B can be optimized independently of others. Once a value is choosen, it can be fixed and is better to re-optimize in the end since it weakly interacts with other hyp. params.&lt;/li&gt;
       &lt;li&gt;&lt;strong&gt;Number of Training iterations (T)&lt;/strong&gt;: To be choosen by early-stopping criteria. During the analysis stage where we try and compare different models, stopping early can have evening out effect. That is we cannot make-out between an over-fitting or under-fitting model. For this reason, it is best to turn it off during analysis. Another param called &lt;em&gt;patience&lt;/em&gt; is generally defined that tells how long the model should wait after it observed the minimum validation error, the param is defined in terms of minimum number of examples to be seen before stopping.&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Momenum (&lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt;)&lt;/strong&gt;: &lt;script type=&quot;math/tex&quot;&gt;\hat{g}\leftarrow (1-\beta)\hat{g}+\beta g&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;\hat{g}&lt;/script&gt; is the smoothed gradient. The default value of &lt;script type=&quot;math/tex&quot;&gt;\beta=1&lt;/script&gt; works for most cases, but is found to help in some cases of unsupervised learning. “The idea is that it removes some of the noise and oscillations that gradient descent has, in particular in the directions of high curvature of the loss function”&lt;br /&gt;
+      &lt;li&gt;&lt;strong&gt;Momenum (&lt;script type=&quot;math/tex&quot;&gt;\beta&lt;/script&gt;)&lt;/strong&gt;: &lt;script type=&quot;math/tex&quot;&gt;\hat{g}\leftarrow (1-\beta)\hat{g}+\beta g&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;\hat{g}&lt;/script&gt; is the smoothed gradient. The default value of &lt;script type=&quot;math/tex&quot;&gt;\beta=1&lt;/script&gt; works for most cases, but is found to help in some cases of unsupervised learning. “The idea is that it removes some of the noise and oscillations that gradient descent has, in particular in the directions of high curvature of the loss function”
  In some rare cases, layer-specific hyper paramater optimization is employed. This makes sense when the number of hidden units vary large between layers. Generally employed in layer-wise unsupervised pre-training.&lt;/li&gt;
     &lt;/ul&gt;
 
     &lt;p&gt;The parameters discussed above are related to SGD (Stochastic Gradient Descent), what follows are the params related to the neural network.&lt;/p&gt;
 
     &lt;ul&gt;
-      &lt;li&gt;&lt;strong&gt;Number of hidden units &lt;script type=&quot;math/tex&quot;&gt;n_h&lt;/script&gt;&lt;/strong&gt; Because of early stopping and possiblty other regularizers such as weight decay, it is mostly important to choose &lt;script type=&quot;math/tex&quot;&gt;n_h&lt;/script&gt; large enough. In general, it is observed that seeting all the layers to equal number of units works better or the same as when setting the hidden unit widths in decreasing or increasing order (pyramidal or reverse pyramidal), but this could be data-dependent (&lt;a href=&quot;http://deeplearning.cs.cmu.edu/pdfs/1111/jmlr10_larochelle.pdf&quot; title=&quot;Exploring Strategies for Training Deep Neural Networks&quot;&gt;Larochelle et.al. 2014&lt;/a&gt;). &lt;br /&gt;
- An over-complete (larger than the input vector) is better than an under-complete one.&lt;br /&gt;
+      &lt;li&gt;&lt;strong&gt;Number of hidden units &lt;script type=&quot;math/tex&quot;&gt;n_h&lt;/script&gt;&lt;/strong&gt; Because of early stopping and possiblty other regularizers such as weight decay, it is mostly important to choose &lt;script type=&quot;math/tex&quot;&gt;n_h&lt;/script&gt; large enough. In general, it is observed that seeting all the layers to equal number of units works better or the same as when setting the hidden unit widths in decreasing or increasing order (pyramidal or reverse pyramidal), but this could be data-dependent (&lt;a href=&quot;http://deeplearning.cs.cmu.edu/pdfs/1111/jmlr10_larochelle.pdf&quot; title=&quot;Exploring Strategies for Training Deep Neural Networks&quot;&gt;Larochelle et.al. 2014&lt;/a&gt;). 
+ An over-complete (larger than the input vector) is better than an under-complete one.
  A more validated observation is that optimal &lt;script type=&quot;math/tex&quot;&gt;n_h&lt;/script&gt; value when training with unsupervised pre-training in a supervised neural network. Typically from 100 to 1000. This could be because unsupervised pre-training could hold lot more information that is not relevant to the task and hence require large hidden layers to make sure relevant information is captured.&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Weight decay:&lt;/strong&gt; This article makes a very inetersting note about thsi parameter. As we know, weight decay is used to avoid over-fitting by limiting capacity of the learner. L2 or L1 regularization correspond to the penalties: &lt;script type=&quot;math/tex&quot;&gt;\lambda \sum_i {\theta_i}^2&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\lambda \sum_i{\theta_i}&lt;/script&gt;, both the terms can be included. In the case of batch-wise handling of data, the param &lt;script type=&quot;math/tex&quot;&gt;\lambda&lt;/script&gt; that we optimize is actually &lt;script type=&quot;math/tex&quot;&gt;\frac{\lambda&#39;*B}{T}&lt;/script&gt; where B is batch size and T is the size of training data.&lt;br /&gt;
-L2 regularization corresponds to a guassian prior (over weights) &lt;script type=&quot;math/tex&quot;&gt;\propto exp^{\frac{-1 \theta^2}{2 \sigma^2}}&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;\sigma^2=1/2\lambda&lt;/script&gt;.&lt;br /&gt;
-&lt;em&gt;Note that there is a connection between L2 regularization and early stopping with one basically playing the same role as other&lt;/em&gt;. L1 regularization is different and sometimes act as feature selectors by making sure the parameters that are not really very useful go to 0. L1 corresponds to laplace density prior &lt;script type=&quot;math/tex&quot;&gt;\propto e^{-\frac{|\theta|}{s}}&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;s=\frac{1}{\lambda}&lt;/script&gt;  &lt;br /&gt;
- It is sufficient to regularize just the output weights in order to constrain the capacity. (we use the input weights and output weights to denote weights corresponding to the first and last layer. The input weights is also often referred to as &lt;em&gt;filters&lt;/em&gt; because of analogies with signal processing techniques)  &lt;br /&gt;
- Using an L1 regularizer helps to make the input filters cleaner and easier to interpret. &lt;br /&gt;
- We may draw that L1 cleans the input weights and L2 the output weights. &lt;br /&gt;
- When we introduce both the penalties into our optimization, then it is required to tune the coeffs for L1 and L2 independently. In particluar, input and output weights are treated different.  &lt;br /&gt;
- &lt;em&gt;In the limit case of the number of hidden layers going to infinity, L2 regularization corresponds to SVMs and L1 to Boosting (&lt;a href=&quot;https://papers.nips.cc/paper/2800-convex-neural-networks.pdf&quot; title=&quot;Convex Neural Networks&quot;&gt;Bengio et.al. 2006&lt;/a&gt;)&lt;/em&gt;  &lt;br /&gt;
+      &lt;li&gt;&lt;strong&gt;Weight decay:&lt;/strong&gt; This article makes a very inetersting note about thsi parameter. As we know, weight decay is used to avoid over-fitting by limiting capacity of the learner. L2 or L1 regularization correspond to the penalties: &lt;script type=&quot;math/tex&quot;&gt;\lambda \sum_i {\theta_i}^2&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\lambda \sum_i{\theta_i}&lt;/script&gt;, both the terms can be included. In the case of batch-wise handling of data, the param &lt;script type=&quot;math/tex&quot;&gt;\lambda&lt;/script&gt; that we optimize is actually &lt;script type=&quot;math/tex&quot;&gt;\frac{\lambda'*B}{T}&lt;/script&gt; where B is batch size and T is the size of training data.
+L2 regularization corresponds to a guassian prior (over weights) &lt;script type=&quot;math/tex&quot;&gt;\propto exp^{\frac{-1 \theta^2}{2 \sigma^2}}&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;\sigma^2=1/2\lambda&lt;/script&gt;.
+&lt;em&gt;Note that there is a connection between L2 regularization and early stopping with one basically playing the same role as other&lt;/em&gt;. L1 regularization is different and sometimes act as feature selectors by making sure the parameters that are not really very useful go to 0. L1 corresponds to laplace density prior &lt;script type=&quot;math/tex&quot;&gt;\propto e^{-\frac{|\theta|}{s}}&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;s=\frac{1}{\lambda}&lt;/script&gt;&lt;br /&gt;
+ It is sufficient to regularize just the output weights in order to constrain the capacity. (we use the input weights and output weights to denote weights corresponding to the first and last layer. The input weights is also often referred to as &lt;em&gt;filters&lt;/em&gt; because of analogies with signal processing techniques)&lt;br /&gt;
+ Using an L1 regularizer helps to make the input filters cleaner and easier to interpret. 
+ We may draw that L1 cleans the input weights and L2 the output weights. 
+ When we introduce both the penalties into our optimization, then it is required to tune the coeffs for L1 and L2 independently. In particluar, input and output weights are treated different.&lt;br /&gt;
+ &lt;em&gt;In the limit case of the number of hidden layers going to infinity, L2 regularization corresponds to SVMs and L1 to Boosting (&lt;a href=&quot;https://papers.nips.cc/paper/2800-convex-neural-networks.pdf&quot; title=&quot;Convex Neural Networks&quot;&gt;Bengio et.al. 2006&lt;/a&gt;)&lt;/em&gt;&lt;br /&gt;
  One of the reason why we cannot rely only on early stopping criteria and treat input and output weights differently from hidden units is because they may be sparse. For example, some input features could be 0 more frequently and others non-zero more frequently. A similar situation may arise when target variable is sparse i.e. trying to predict a rare event. In both cases, the effective number of meaningful update (active feature or rare event) seen by these params is less than the actual number of updates. The parameters (weights outgoing from the corresponding input) of such sparse examples should be more regularized, that is to scale the reg. coeff. of these params by one over effective number of updated seen by the parameter. This presents an alteranaate way to deal with imbalanced data or anamolies(?).&lt;/li&gt;
       &lt;li&gt;There are several approaches that aim to minimize the sparsity of hidden layers (note that sparsity is very different from L1 norm)&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Non-linear activation functions&lt;/strong&gt;: Popular choices are: sigmoid &lt;script type=&quot;math/tex&quot;&gt;\frac{1}{1+e^{-a}}&lt;/script&gt;, the hyperbolic tangent &lt;script type=&quot;math/tex&quot;&gt;\frac{e^a-e^{-a}}{e^a+e^{-a}}&lt;/script&gt;, rectifier max; max(0,a) and hard tanh.  &lt;br /&gt;
-Sigmoid was shown to yield serious optimization difficulties when used as the top hidden layer of a deep supervised network without unsupervised pre-training. &lt;br /&gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;For output (or reconstruction) units, hard neuron non-linearities like the rectifier do not make sense because when the unit is saturated (e.g. a &amp;lt; 0 for the rectifier) and associated with a loss, no gradient is propagated inside the network, i.e., there is no chance to correct the error. For output (or reconstruction) units, hard neuron non-linearities like the rectifier do not make sense because when the unit is saturated (e.g. a &amp;lt; 0 for the rectifier) and associated with a loss, no gradient is propagated inside the network, i.e., there is no chance to correct the error&lt;/code&gt; &lt;br /&gt;
+      &lt;li&gt;&lt;strong&gt;Non-linear activation functions&lt;/strong&gt;: Popular choices are: sigmoid &lt;script type=&quot;math/tex&quot;&gt;\frac{1}{1+e^{-a}}&lt;/script&gt;, the hyperbolic tangent &lt;script type=&quot;math/tex&quot;&gt;\frac{e^a-e^{-a}}{e^a+e^{-a}}&lt;/script&gt;, rectifier max; max(0,a) and hard tanh.&lt;br /&gt;
+Sigmoid was shown to yield serious optimization difficulties when used as the top hidden layer of a deep supervised network without unsupervised pre-training. 
+&lt;code class=&quot;highlighter-rouge&quot;&gt;For output (or reconstruction) units, hard neuron non-linearities like the rectifier do not make sense because when the unit is saturated (e.g. a &amp;lt; 0 for the rectifier) and associated with a loss, no gradient is propagated inside the network, i.e., there is no chance to correct the error. For output (or reconstruction) units, hard neuron non-linearities like the rectifier do not make sense because when the unit is saturated (e.g. a &amp;lt; 0 for the rectifier) and associated with a loss, no gradient is propagated inside the network, i.e., there is no chance to correct the error&lt;/code&gt; 
 The general trick is to use linear output and squared error for Gaussian output model, cross-entropy and sigmoid output for binomial output model and log output[target class] with softmax outputs to correspond to multinomial output variables (that is take softmax for over all the neuron outpus and score by considering only target label required).&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Weights initiazation and scaling coefficient&lt;/strong&gt;: The weights should be initialized randomly inorder to break symmetry and bias can be initialized to 0. &lt;br /&gt;
-If not all the neurons initially will produce the same output and hence receive the same gradient, wasting the capacity.&lt;br /&gt;
-The scaling factor controls how small or big the initial weights are. Units with large input (fan-in of the unit) should have smaller weights (I have first-hand experience with problems that arise when this is not done with one of my NN assignments. The initialization that worked smaller number of hidden units just over-shooted due to explosive gradients. That is because the output diverged to a large value when I did this)  &lt;br /&gt;
-The recommendation made is either to sample &lt;em&gt;Uniform(-r,r)&lt;/em&gt;. &lt;br /&gt;
+      &lt;li&gt;&lt;strong&gt;Weights initiazation and scaling coefficient&lt;/strong&gt;: The weights should be initialized randomly inorder to break symmetry and bias can be initialized to 0. 
+If not all the neurons initially will produce the same output and hence receive the same gradient, wasting the capacity.
+The scaling factor controls how small or big the initial weights are. Units with large input (fan-in of the unit) should have smaller weights (I have first-hand experience with problems that arise when this is not done with one of my NN assignments. The initialization that worked smaller number of hidden units just over-shooted due to explosive gradients. That is because the output diverged to a large value when I did this)&lt;br /&gt;
+The recommendation made is either to sample &lt;em&gt;Uniform(-r,r)&lt;/em&gt;. 
 Where r is &lt;script type=&quot;math/tex&quot;&gt;\sqrt{\frac{6}{fan-in+fan-out}}&lt;/script&gt; for hyperbolic tangent units and  &lt;script type=&quot;math/tex&quot;&gt;4*\sqrt{\frac{6}{fan-in+fan-out}}&lt;/script&gt;. fan-in and fan-out are the input and output dimension of a hidden layer.&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;General advice on finding the best model.  &lt;br /&gt;
-  Numerical hyper-parameters need to be grid-searched in order to find one. &lt;br /&gt;
-  It is not sufficient to conclude the best value based on comparison with less than 5 other values.   &lt;br /&gt;
-  Scale of values considered is often an important decision to make, this is the starting interval in which the values will be looked up. &lt;br /&gt;
-  It makes more sense to sample values uniformly in the log space of such interval than to blindly evaluate at every value because the perf. at say 0.01 and 0.011 is likley to remain the same.  &lt;br /&gt;
-  Strategies for hyper-param selection: Coordinate descent and Multi-resolution search.&lt;br /&gt;
-  Coordinate descent: Make changes to the each hyper-param one at a time, find the best value for the param and move on to the next one. &lt;br /&gt;
+&lt;p&gt;General advice on finding the best model.&lt;br /&gt;
+  Numerical hyper-parameters need to be grid-searched in order to find one. 
+  It is not sufficient to conclude the best value based on comparison with less than 5 other values. &lt;br /&gt;
+  Scale of values considered is often an important decision to make, this is the starting interval in which the values will be looked up. 
+  It makes more sense to sample values uniformly in the log space of such interval than to blindly evaluate at every value because the perf. at say 0.01 and 0.011 is likley to remain the same.&lt;br /&gt;
+  Strategies for hyper-param selection: Coordinate descent and Multi-resolution search.
+  Coordinate descent: Make changes to the each hyper-param one at a time, find the best value for the param and move on to the next one. 
   Mult-resolution search: There is no point in fine-tuning or high-resolution search over large intervals. Do a low-resolution search over several settings and then high-res search over best configurations.&lt;/p&gt;
 
 &lt;h2 id=&quot;limitations-of-deep-learning&quot;&gt;Limitations of Deep Learning&lt;/h2&gt;
@@ -227,10 +420,81 @@ Where r is &lt;script type=&quot;math/tex&quot;&gt;\sqrt{\frac{6}{fan-in+fan-out
   &lt;li&gt;In this lecture, Hinton goes on lengths elaborating why brains cannot do exact back-propagation and explains possible other ways in which it could be learning the weights. He argues that neurons in a feed-back loop can do away with the need to back-propagate by considering the difference between the inout at this instance and previous one (plasticity of brain, Spike-time dependent plasticity)&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;h2 id=&quot;debugging-in-tensorflow&quot;&gt;Debugging in Tensorflow&lt;/h2&gt;
+&lt;p&gt;Debugging or even understanding a tensorflow code can be a daunting task. 
+Here in this section, I will share some tricks of trade.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-practical-guide-to-debugging-tensorflow-codestf-debug&quot;&gt;&lt;a href=&quot;https://wookayin.github.io/TensorflowKR-2016-talk-debugging&quot; title=&quot;A practical guide to debugging tensorflow codes&quot;&gt;A practical guide to debugging tensorflow codes&lt;/a&gt;&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Use &lt;code class=&quot;highlighter-rouge&quot;&gt;Session.run()&lt;/code&gt; on tensorflow variables.&lt;/li&gt;
+  &lt;li&gt;Use off-the-shelf tensorboard to compute the variable summaries.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tf.print()&lt;/code&gt;: some control can be execrised through the paramaters of this method such as &lt;code class=&quot;highlighter-rouge&quot;&gt;first_n&lt;/code&gt;, number of lines to print before breaking, message and summarizer. Behaves like an identity operation with the side-effect of printing.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tf.Assert()&lt;/code&gt; is also on the same lines, print when a condition is met. In the end, this need to be evaluated with &lt;code class=&quot;highlighter-rouge&quot;&gt;session.run()&lt;/code&gt;. One trick is to add all asserts to a collection with: &lt;code class=&quot;highlighter-rouge&quot;&gt;tf.add_to_collection('Asserts', tf.Assert(...))&lt;/code&gt; and in the end: &lt;code class=&quot;highlighter-rouge&quot;&gt;assert_op = tf.group(*tf.get_collections('Asserts'))&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;session.run(assert_op)&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;How about python debuggers: &lt;code class=&quot;highlighter-rouge&quot;&gt;pdb&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;ipdb&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;pudb&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Some usefule Tensorflow APIs:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tf.get_default_graph()&lt;/code&gt; Get the current (default) graph&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;G.get_operations, G.get_operations_by_name(name),G.get_tensor_by_name(name), tf.get_collection(tf.GraphKeys.~~)&lt;/code&gt; gets all operations (sometimes by name) or tensors or collection&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tf.trainable_variables()&lt;/code&gt; list all the trainable variables and likewise &lt;code class=&quot;highlighter-rouge&quot;&gt;tf.global_variables()&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;[t = tf.verify_tensor_all_finite(t, msg)][tf-doc-controlflow]&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;tf.add_check_numerics_ops()&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Naming all the tensors and ops can help in pointing where the problem is when looking at stacktrace.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Advanced&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;It is possible to interpose any python code in computation graph by wrapping a tensorflow operation around the function with: &lt;code class=&quot;highlighter-rouge&quot;&gt;tf.py_func()&lt;/code&gt;. 
+Consider the following example (https://wookayin.github.io/TensorflowKR-2016-talk-debugging/#57):&lt;/li&gt;
+  &lt;li&gt;https://wookayin.github.io/TensorflowKR-2016-talk-debugging/#75&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;multilayer_perceptron&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;fc1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fully_connected&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation_fn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;relu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'fc1'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;fc2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fully_connected&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fc1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation_fn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;relu&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'fc2'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;out&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fully_connected&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fc2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation_fn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'out'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_debug_print_func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fc1_val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fc2_val&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'FC1 : {}, FC2 : {}'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fc1_val&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fc2_val&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shape&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'min, max of FC2 = {}, {}'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fc2_val&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fc2_val&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;debug_print_op&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py_func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_debug_print_func&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fc1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fc2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;bool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;control_dependencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;debug_print_op&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;out&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;identity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'out'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;The &lt;a href=&quot;https://github.com/ericjang/tdb&quot;&gt;tdb&lt;/a&gt; library&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tfdbg&lt;/code&gt;: the official debugger from TF. [Dec. 2016]&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tfdbgtfdbg&quot;&gt;&lt;a href=&quot;https://www.tensorflow.org/versions/master/how_tos/debugger/&quot; title=&quot;TensorFlow Debugger (tfdbg) Command-Line-Interface Tutorial: MNIST&quot;&gt;tfdbg&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The debugger from tensorflow can be handy.&lt;/p&gt;
+
+&lt;p&gt;It can be used to see the values of the nodes in the computation graph at runtime.
+It can also be used to quicly figure out where a bug is: such as a variable not initialized, inf or nan values or shape mismatch in matrix multiplication with pre-fedined filters: &lt;code class=&quot;highlighter-rouge&quot;&gt;uninitialized_variable&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;has_inf_or_nan&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;shape_filter&lt;/code&gt; respectively.&lt;/p&gt;
+
+&lt;p&gt;It is possible to wrap the tensorflow session to debug along with filters to quicly figure where things are going wrong.
+It works a gdb session and the interactive session supports: mouse clicks,  which can be turned off with &lt;code class=&quot;highlighter-rouge&quot;&gt;mouse off&lt;/code&gt;, history upon up-arrow and tab completions.&lt;/p&gt;
+
+&lt;p&gt;Include the following linesr to enable interactive debugging (the tool is more helpful if all the ops and variables are properly named)&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;tensorflow.python&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;debug&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf_debug&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FLAGS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;debug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf_debug&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LocalCLIDebugWrapperSession&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;session&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_tensor_filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;has_inf_or_nan&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf_debug&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;has_inf_or_nan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;At the time of writing this, the module is experimental and buggy. 
+For example, it failed on BasicLSTMCell with the error: &lt;code class=&quot;highlighter-rouge&quot;&gt;AttributeError: 'LSTMStateTuple' object has no attribute 'name'&lt;/code&gt;.
+I don’t get it completely, but it looks like it is trying to find name attribute of LSTMCell which is not defined by default.&lt;/p&gt;
+
 </description>
         <pubDate>Tue, 25 Oct 2016 16:42:25 +0530</pubDate>
-        <link>http://yourdomain.com/jekyll/update/2016/10/25/study.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/jekyll/update/2016/10/25/study.html</guid>
+        <link>http://localhost:4000/jekyll/update/2016/10/25/study.html</link>
+        <guid isPermaLink="true">http://localhost:4000/jekyll/update/2016/10/25/study.html</guid>
         
         
         <category>jekyll</category>

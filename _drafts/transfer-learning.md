@@ -45,6 +45,32 @@ Things to note, the mean accuracy was around 33% when the training set contains 
 Dropout on layers: 6/7 improves perf. by 0-2%.
 This method beats two-layer convolution network trained on only the task-specific training data by 20%. 
 
+### Domain Adaptation ###
+
+This entire work is a kind of domain adapatation. 
+This section explores domain apaptability of featutures extracted from Conv. layers.
+In this task, the features are compared over their perf. on multi-class accuracy on ffice dataset collected from Amamzon, webcam and camera snapshots.
+The ConvNet features beat SURF features by a large margin which means that this hand-engineered feature do not represent all the knowledge required to classify as well as convNet layers. 
+The fact that logistic regression over source, target or combined data did not perform well and Daume III (next section) and SVM did well means that there are several features that are specific to a certain domain and feature reweightinghelps to increase the performance from **75.30** for best performing log. regr. model to Daume III.
+
+The table below is an interesting read. 
+Observe that the in the case of Dslr$$\rightarrow$$webcam, the performance of log. regression model when trained on source data is better than when trained on target data. 
+This indicates that the domains are not very different which is understandable since they only differ in resolution. 
+Due to this, Daume III did not do any better than logistic regression on source and target data combined.
+ 
+ ![Domain Adaptation with AlexNet features][decaf-domain-adapt]
+ 
+## [How transferable are features in deep neural networks?][transfer-bengio-14] ##
+
+Unlike other papers that measure transfer of features from ImageNet to various image-processing task, this work takes a different approach. 
+Transfer learning is tested on mutually exludive splits of ImageNet data containing 1000 classes. 
+The 1000 class collection is either split randomly that is both the splits still contain 1000 classes but the examples in each class will be shared equally between them.
+
+In a different experiment, the data is split to form two sets that are very different from other.
+The 1000 classes are split into almost equal sets based on if it is man-made or natural, we will refer to this split as non-random split.
+
+The effect of coadaptation when using features from different layers is isolated, thet is when we are using features from say a 4th or 5th layer in a seven layer netweork then, the activations of this layer might have co-adapted with the next layer.
+ 
 ## [Frustratingly Easy Domain Adaptation][easyadapt] ##
 
 This is a 2007 paper that propses a simple pre-processing trick for easy adaptation. 
@@ -66,6 +92,23 @@ for ($i=0; $i<@ARGV; $i++) {
 }
 ```
 
+The snippet above has the following input-output characteristics. 
+```text
+====File 1====
+x a v f
+y a c d
+===File 2===
+x d f
+y g d f
+===Output===
+x *a 0a *v 0v *f 0f
+y *a 0a *c 0c *d 0d
+x *d 1d *f 1f
+y *g 1g *d 1d *f 1f
+```
+The output needs to be further processed before it is used, more specifically any symbol in input that starts with * is general and starting with '%d' belongs to that number slot in the input. 
+
+
 Consider the case where there is a loads of data in one domain but is different from the domain that we want to use it in. 
 For example, we might want a PoS tagger trained on NewsWire to work on hardware blogs. 
 That is, we have data from source domain and some amount of data from target domain; there are sevearal standard ways to adapt in such a case. 
@@ -82,17 +125,22 @@ According to the author, these approaches are surprisingly hard to beat.
   
   Two models are found to have beat these 
   * PRIOR: train a model on target data with priors from model trained on source data. 
-    It is about just adding a regularization term like this: $$\lambda{{||w-w_s||}_2}^2$$
+    It is about just adding a regularization term like this: $$\lambda{\lvert\lvert{w-w_s}\rvert\rvert _2}^2$$
   * By the very author, key idea is to learn three different models: one for each of source, target and general. 
     The idea is very similar to the work presented in this paper, distinction is made for each example: if it is source specific or general or target-specific or general.
 	The EM algo. presented is quite slow, so this paper is redemtion of sorts.
 
+This work presents a simple augmentation of data that transforms source and target data differently with $$\phi^s(\mathbf{x})$$=$$<\mathbf x,\mathbf x,0>$$, $$\phi^t(\mathbf{x})$$=$$<\mathbf x,0,\mathbf x>$$.
+The intuition is that any by replicating the feature space thrice one for general, source-specific and target-specific, the features that are specific to say target or source will remain in their respective dimensions and common ones in the general dimension.
+
+An interesting takeaway is that things did not go south because of teh increased dimensionality of feature space. 
+The methodfailed to perform in cases where the source and target domains did not differ by much.
+
+
 [RIT'13]: https://arxiv.org/pdf/1403.6382v3.pdf
 [feature-transfer]: /assets/images/feature-transfer13.png
 [decaf]: https://arxiv.org/pdf/1310.1531v1.pdf
-
 [alexnet]: https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf "ImageNet classification with deep convolutional neural networks. "
-
 [easyadapt]: http://www.umiacs.umd.edu/~hal/docs/daume07easyadapt.pdf "Frustratingly Easy Domain Adaptation"
-
-
+[decaf-domain-adapt]: /assets/images/decaf-domain-adapt.png
+[transfer-bengio-14]: https://arxiv.org/abs/1411.1792
