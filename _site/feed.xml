@@ -1,14 +1,583 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>My notes</title>
-    <description>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+    <title>Vihari Piratla blog</title>
+    <description>By a researcher in computer science.
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 10 Feb 2017 15:19:56 +0530</pubDate>
-    <lastBuildDate>Fri, 10 Feb 2017 15:19:56 +0530</lastBuildDate>
+    <pubDate>Fri, 17 Mar 2017 23:25:41 +0530</pubDate>
+    <lastBuildDate>Fri, 17 Mar 2017 23:25:41 +0530</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
+    
+      <item>
+        <title>Summary of two papers from ICLR'17</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot; id=&quot;markdown-toc-introduction&quot;&gt;Introduction&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#introduction-continued&quot; id=&quot;markdown-toc-introduction-continued&quot;&gt;Introduction [continued…]&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#tricks-to-avoid-over-fitting&quot; id=&quot;markdown-toc-tricks-to-avoid-over-fitting&quot;&gt;Tricks to avoid over-fitting&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#common-image-classification-datasets&quot; id=&quot;markdown-toc-common-image-classification-datasets&quot;&gt;Common Image classification datasets&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#imagenethttpcsstanfordedupeoplekarpathycnnembedcnnembed1kjpg&quot; id=&quot;markdown-toc-imagenethttpcsstanfordedupeoplekarpathycnnembedcnnembed1kjpg&quot;&gt;&lt;a href=&quot;http://cs.stanford.edu/people/karpathy/cnnembed/cnn_embed_1k.jpg&quot;&gt;Imagenet&lt;/a&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#popular-neural-nets-for-image-classification&quot; id=&quot;markdown-toc-popular-neural-nets-for-image-classification&quot;&gt;Popular neural nets for Image Classification&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#on-large-batch-training-for-deep-learning-generalization-gap-and-sharp-minima-1&quot; id=&quot;markdown-toc-on-large-batch-training-for-deep-learning-generalization-gap-and-sharp-minima-1&quot;&gt;On Large-Batch Training For Deep Learning: Generalization Gap and Sharp Minima [1]&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#why-not-just-use-small-batch-methods&quot; id=&quot;markdown-toc-why-not-just-use-small-batch-methods&quot;&gt;Why not just use Small Batch methods?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#why-is-large-batch-bad&quot; id=&quot;markdown-toc-why-is-large-batch-bad&quot;&gt;Why is Large Batch bad?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#guess&quot; id=&quot;markdown-toc-guess&quot;&gt;Guess&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#what-are-sharp-and-flat-minimizers&quot; id=&quot;markdown-toc-what-are-sharp-and-flat-minimizers&quot;&gt;What are sharp and flat minimizers?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#what-are-sharp-and-flat-minimizers-continued&quot; id=&quot;markdown-toc-what-are-sharp-and-flat-minimizers-continued&quot;&gt;What are sharp and flat minimizers? [continued…]&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#targeted-experiments&quot; id=&quot;markdown-toc-targeted-experiments&quot;&gt;Targeted experiments&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#targeted-experiments-continued&quot; id=&quot;markdown-toc-targeted-experiments-continued&quot;&gt;Targeted experiments [continued…]&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#targeted-experiments-continued-1&quot; id=&quot;markdown-toc-targeted-experiments-continued-1&quot;&gt;Targeted experiments [continued…]&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#recognizing-the-problem&quot; id=&quot;markdown-toc-recognizing-the-problem&quot;&gt;Recognizing the problem&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#over-fitting-is-not-the-problem&quot; id=&quot;markdown-toc-over-fitting-is-not-the-problem&quot;&gt;Over-fitting is not the problem&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#an-evidence-for-if-the-sharpness-of-minima-is-a-problem&quot; id=&quot;markdown-toc-an-evidence-for-if-the-sharpness-of-minima-is-a-problem&quot;&gt;An evidence for if the sharpness of minima is a problem&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#an-evidence-for-if-the-sharpness-of-minima-is-a-problem-continued&quot; id=&quot;markdown-toc-an-evidence-for-if-the-sharpness-of-minima-is-a-problem-continued&quot;&gt;An evidence for if the sharpness of minima is a problem [continued…]&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#sharpness-metric&quot; id=&quot;markdown-toc-sharpness-metric&quot;&gt;Sharpness metric&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#what-does-the-metric-say&quot; id=&quot;markdown-toc-what-does-the-metric-say&quot;&gt;What does the metric say?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#how-is-sb-avoiding-this-solution&quot; id=&quot;markdown-toc-how-is-sb-avoiding-this-solution&quot;&gt;How is SB avoiding this solution?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#how-is-sb-avoiding-this-solution-continued&quot; id=&quot;markdown-toc-how-is-sb-avoiding-this-solution-continued&quot;&gt;How is SB avoiding this solution? [continued…]&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#can-we-patch-the-lb-method&quot; id=&quot;markdown-toc-can-we-patch-the-lb-method&quot;&gt;Can we patch the LB method?&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#does-not-amount-to-reducing-the-sharpness-of-the-solution&quot; id=&quot;markdown-toc-does-not-amount-to-reducing-the-sharpness-of-the-solution&quot;&gt;Does not amount to reducing the sharpness of the solution&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#can-we-patch-the-lb-method-continued&quot; id=&quot;markdown-toc-can-we-patch-the-lb-method-continued&quot;&gt;Can we patch the LB method? [continued…]&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#whats-next&quot; id=&quot;markdown-toc-whats-next&quot;&gt;What’s next?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#understanding-deep-learning-requires-rethinking-generalization-best-paper-award-iclr-2017-4&quot; id=&quot;markdown-toc-understanding-deep-learning-requires-rethinking-generalization-best-paper-award-iclr-2017-4&quot;&gt;UNDERSTANDING DEEP LEARNING REQUIRES RETHINKING GENERALIZATION (Best Paper Award ICLR 2017) [4]&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#the-big-question&quot; id=&quot;markdown-toc-the-big-question&quot;&gt;The big question&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#randomization-tests&quot; id=&quot;markdown-toc-randomization-tests&quot;&gt;Randomization tests&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#can-the-traditional-approaches-provide-a-generalization-bound&quot; id=&quot;markdown-toc-can-the-traditional-approaches-provide-a-generalization-bound&quot;&gt;Can the traditional approaches provide a generalization bound?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#are-regularizers-responsible-for-generalization&quot; id=&quot;markdown-toc-are-regularizers-responsible-for-generalization&quot;&gt;Are Regularizers responsible for Generalization?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#are-regularizers-responsible-for-generalization-continued&quot; id=&quot;markdown-toc-are-regularizers-responsible-for-generalization-continued&quot;&gt;Are Regularizers responsible for Generalization? [continued…]&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#implicit-regularizers&quot; id=&quot;markdown-toc-implicit-regularizers&quot;&gt;Implicit Regularizers?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#concluding-remarks-about-regularization&quot; id=&quot;markdown-toc-concluding-remarks-about-regularization&quot;&gt;Concluding remarks about regularization&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#expressivity-of-networks&quot; id=&quot;markdown-toc-expressivity-of-networks&quot;&gt;Expressivity of networks&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#is-sgd-responsible-for-generalization&quot; id=&quot;markdown-toc-is-sgd-responsible-for-generalization&quot;&gt;Is SGD responsible for generalization?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot; id=&quot;markdown-toc-conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#a-case-study&quot; id=&quot;markdown-toc-a-case-study&quot;&gt;A Case study&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#alexnet-on-randomized-cifar10&quot; id=&quot;markdown-toc-alexnet-on-randomized-cifar10&quot;&gt;AlexNet on Randomized CIFAR10&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#it-did-memorize-the-dataset&quot; id=&quot;markdown-toc-it-did-memorize-the-dataset&quot;&gt;It did memorize the dataset&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#characteristics-of-the-solution-learned&quot; id=&quot;markdown-toc-characteristics-of-the-solution-learned&quot;&gt;Characteristics of the solution learned&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#model-learned-on-true-data&quot; id=&quot;markdown-toc-model-learned-on-true-data&quot;&gt;Model learned on true data&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#model-learned-on-randomized-pixels&quot; id=&quot;markdown-toc-model-learned-on-randomized-pixels&quot;&gt;Model learned on randomized pixels&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#interesting-remarkscritics-from-the-audience&quot; id=&quot;markdown-toc-interesting-remarkscritics-from-the-audience&quot;&gt;Interesting remarks/critics from the audience&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#references&quot; id=&quot;markdown-toc-references&quot;&gt;References&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#proof-of-theorem-extra-slide&quot; id=&quot;markdown-toc-proof-of-theorem-extra-slide&quot;&gt;Proof of theorem (Extra slide)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#contact&quot; id=&quot;markdown-toc-contact&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Things you should know before we proceed&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Gradient descent optimization procedures – weight updates proportional to the gradient. Several optimizers such as Rmsprop, SGD, momentum, ADAM exist. They are all slight variations that generally only affect the convergence rate and can sometimes find a better solution.&lt;/li&gt;
+  &lt;li&gt;Optimization parameter: batch size. Some variants of optimization consider the errors on all the data available (full batch learning), some consider a (relatively) small batch (mini-batch) or only one example in each step (stochastic).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;introduction-continued&quot;&gt;Introduction [continued…]&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Generalization error: The difference between the error on test and train datasets.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tricks-to-avoid-over-fitting&quot;&gt;Tricks to avoid over-fitting&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Explicit regularization: minimizing &lt;script type=&quot;math/tex&quot;&gt;l_2&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;l_1&lt;/script&gt; norm on weights. Dropout. Input augmentation for example, adding noise to the input or random transformations over the input like random crops&lt;/li&gt;
+  &lt;li&gt;Implicit regularization: batch norm and early stopping&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For further reference, see these &lt;a href=&quot;http://vision.stanford.edu/teaching/cs231b_spring1415/slides/alexnet_tugce_kyunghee.pdf&quot;&gt;slides&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Note: We recognize over-fitting when the error on validation set starts increasing.&lt;br /&gt;
+We only care about ReLU (Rectified Linear Units) activation function for this material.&lt;/p&gt;
+
+&lt;h2 id=&quot;common-image-classification-datasets&quot;&gt;Common Image classification datasets&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.cs.toronto.edu/~kriz/cifar.html&quot;&gt;CIFAR10&lt;/a&gt;: 60,000 images, 10 classes, 32x32 resolution, 6,000 images per class&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/cifar10.png&quot; alt=&quot;CIFAR10&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;imagenethttpcsstanfordedupeoplekarpathycnnembedcnnembed1kjpg&quot;&gt;&lt;a href=&quot;http://cs.stanford.edu/people/karpathy/cnnembed/cnn_embed_1k.jpg&quot;&gt;Imagenet&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;1.2 million images, 1000 classes, ~ 300x300 resolution&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;Imagenet&quot; src=&quot;/assets/images/slides/imagenet.jpg&quot; style=&quot;width:500px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;(&lt;a href=&quot;http://cs.stanford.edu/people/karpathy/cnnembed/cnn_embed_1k.jpg&quot;&gt;Image courtesy&lt;/a&gt;)&lt;/p&gt;
+
+&lt;h2 id=&quot;popular-neural-nets-for-image-classification&quot;&gt;Popular neural nets for Image Classification&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;AlexNet&lt;/strong&gt; and &lt;strong&gt;Inception&lt;/strong&gt; are two networks that are designed for performance on the ImageNet.&lt;/p&gt;
+
+&lt;p&gt;AlexNet:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;7 hidden weight layers&lt;/li&gt;
+  &lt;li&gt;650K neurons&lt;/li&gt;
+  &lt;li&gt;60M parameters&lt;/li&gt;
+  &lt;li&gt;630M connections&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Inception is much bigger and deeper.&lt;/p&gt;
+
+&lt;p&gt;For more information, consult this &lt;a href=&quot;https://culurciello.github.io/tech/2016/06/04/nets.html&quot;&gt;blog&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;on-large-batch-training-for-deep-learning-generalization-gap-and-sharp-minima-1&quot;&gt;On Large-Batch Training For Deep Learning: Generalization Gap and Sharp Minima [1]&lt;/h2&gt;
+&lt;p&gt;Understand why Small Batch (SB) methods generally find a better solution than Large Batch (LB) ones.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-not-just-use-small-batch-methods&quot;&gt;Why not just use Small Batch methods?&lt;/h2&gt;
+
+&lt;p&gt;Large batches are typically in the order of thousands and batch sizes less than 512 are considered small.&lt;/p&gt;
+
+&lt;p&gt;From Yann LeCun’s “Efficient Backprop”[2]&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Advantages of Stochastic Learning&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;Stochastic learning is usually much faster than batch learning.&lt;/li&gt;
+    &lt;li&gt;Stochastic learning also often results in better solutions.&lt;/li&gt;
+    &lt;li&gt;Stochastic learning can be used for tracking changes.&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It is an established fact that stochastic learning gives a better solution.&lt;/li&gt;
+  &lt;li&gt;(The 3rd advantage above:) Stochastic learning can deal with the case when the function being modelled changes with time. When we average over all the data, the changes go undetected. Online learning if “operate properly” can give good approximation results.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Advantages of Batch Learning&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;Conditions of convergence are well understood.&lt;/li&gt;
+    &lt;li&gt;Many acceleration techniques (e.g. Conjugate gradient) only operate in batch learning.&lt;/li&gt;
+    &lt;li&gt;Theoretical analysis of the weight dynamics and convergence rates are simpler.&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Notes:
+The very reason why SGD is useful, noise, also works to the advantage of batch learning.&lt;br /&gt;
+The main disadvantage that is emphasized in this paper is the difficulty in parallelizing the SGD update because (1) sequential nature of the updates (2) the update step does not contain enough computation that it reaps the benefit of parallelization.&lt;br /&gt;
+By reducing the time per update step, it is possible to reduce the computation time since the number of update steps required in a batch learning is lesser.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-is-large-batch-bad&quot;&gt;Why is Large Batch bad?&lt;/h2&gt;
+
+&lt;p&gt;Although, optimization with large and small batch lead to similar performance on train set, the solution obtained by large batch suffers on the test set.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Possible reasons:
+    &lt;ul&gt;
+      &lt;li&gt;LB methods over-fit the model; &lt;!-- .element: class=&quot;fragment&quot; --&gt;&lt;/li&gt;
+      &lt;li&gt;LB methods are attracted to saddle points; &lt;!-- .element: class=&quot;fragment&quot; --&gt;&lt;/li&gt;
+      &lt;li&gt;LB methods lack the explorative properties of SB methods and tend to zoom-in on the minimizer closest to the initial point; &lt;!-- .element: class=&quot;fragment&quot; --&gt;&lt;/li&gt;
+      &lt;li&gt;SB and LB methods converge to qualitatively different minimizers with differing generalization properties. &lt;!-- .element: class=&quot;fragment&quot; --&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The data presented in this paper supports the last two causes. &lt;!-- .element: class=&quot;fragment&quot; --&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;guess&quot;&gt;Guess&lt;/h2&gt;
+
+&lt;p&gt;It is conjectured that the LB methods lack explorative properties and settle at a sharp minimizer which may perform well on training data, but may fail on test data.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-are-sharp-and-flat-minimizers&quot;&gt;What are sharp and flat minimizers?&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A flat minimizer &lt;script type=&quot;math/tex&quot;&gt;\bar{x}&lt;/script&gt; is one for which the function varies slowly in a relatively large neighborhood of &lt;script type=&quot;math/tex&quot;&gt;\bar{x}&lt;/script&gt;. In contrast, a sharp minimizer &lt;script type=&quot;math/tex&quot;&gt;\hat{x}&lt;/script&gt; is such that the function increases rapidly in a small neighborhood of &lt;script type=&quot;math/tex&quot;&gt;\hat{x }&lt;/script&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;what-are-sharp-and-flat-minimizers-continued&quot;&gt;What are sharp and flat minimizers? [continued…]&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/lb_vs_sb/sharp_vs_flat_minimizer.png&quot; alt=&quot;Sharp vs Flat minimizer&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;targeted-experiments&quot;&gt;Targeted experiments&lt;/h2&gt;
+
+&lt;p&gt;Six multi-class classification network configurations are considered.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/lb_vs_sb/network_configs.png&quot; alt=&quot;Network configurations&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;targeted-experiments-continued&quot;&gt;Targeted experiments [continued…]&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;For LB methods, 10% of the training data is chosen as the batch size (which means the batch size varied from 5,000 on MNIST and ~72,000 on TIMIT dataset). For SB, the batch size is set to 256 for all the experiments.&lt;/li&gt;
+  &lt;li&gt;Experiments with any of the optimizers: ADAM, ADGRAD, SGD, adaQN gave similar results, all the results reported are with ADAM optimizer.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;targeted-experiments-continued-1&quot;&gt;Targeted experiments [continued…]&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/lb_vs_sb/dataset_sizes.png&quot; alt=&quot;Dataset sizes&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;recognizing-the-problem&quot;&gt;Recognizing the problem&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/lb_vs_sb/train_and_test_acc.png&quot; alt=&quot;Train and test accuracy&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note: 
+The numbers in the table are written in “mean+standard deviation” format summarized across five trails.&lt;br /&gt;
+Observe that the difference between LB and SB is starker in test accuracy than in train.&lt;/p&gt;
+
+&lt;h2 id=&quot;over-fitting-is-not-the-problem&quot;&gt;Over-fitting is not the problem&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/lb_vs_sb/not_overfitting.png&quot; alt=&quot;Overfitting not a problem&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note: In both SB and LB cases, the network is trained so as not to deteriorate on validation data.&lt;/p&gt;
+
+&lt;h2 id=&quot;an-evidence-for-if-the-sharpness-of-minima-is-a-problem&quot;&gt;An evidence for if the sharpness of minima is a problem&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;The nature of minima can be visualized with something called parametric 1-D plots.&lt;/li&gt;
+  &lt;li&gt;If &lt;script type=&quot;math/tex&quot;&gt;{x_l}^{\ast}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;{x_s}^{\ast}&lt;/script&gt; are the solutions (weights) corresponding to the large and small batch methods, then the 1-D parametric plots look at the nature of all solutions in 
+&lt;script type=&quot;math/tex&quot;&gt;\alpha\*{x_l}^{\ast}+(1-\alpha)\*{x_s}^{\ast}&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\alpha \in [-1, 2]&lt;/script&gt; for the sake of experiment.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\alpha&lt;/script&gt;=1 corresponds to the solution of large batch and &lt;script type=&quot;math/tex&quot;&gt;\alpha&lt;/script&gt;=0 to the small batch.&lt;/p&gt;
+
+&lt;h2 id=&quot;an-evidence-for-if-the-sharpness-of-minima-is-a-problem-continued&quot;&gt;An evidence for if the sharpness of minima is a problem [continued…]&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/lb_vs_sb/param_plots.png&quot; alt=&quot;1-D Parametric plots&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note: 
+There is an interesting correlation between the table 2 and this figure that I cannot help, but notice.&lt;br /&gt;
+The network configurations when arranged according to the difference in test accuracy with LB and SB methods will fall into: &lt;script type=&quot;math/tex&quot;&gt;F_1&lt;/script&gt;&amp;lt;&lt;script type=&quot;math/tex&quot;&gt;C_2&lt;/script&gt;&amp;lt;&lt;script type=&quot;math/tex&quot;&gt;C_1&lt;/script&gt;&amp;lt;&lt;script type=&quot;math/tex&quot;&gt;C_3&lt;/script&gt;&amp;lt;&lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;&amp;lt;&lt;script type=&quot;math/tex&quot;&gt;C_4&lt;/script&gt;&lt;br /&gt;
+Now, take a look at the solid blue line in each of the figures.
+&lt;script type=&quot;math/tex&quot;&gt;F_1&lt;/script&gt; is the most flat of all at &lt;script type=&quot;math/tex&quot;&gt;\alpha=1&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;C_4&lt;/script&gt; at &lt;script type=&quot;math/tex&quot;&gt;\alpha=1&lt;/script&gt; is a valley with long walls on both the sides.&lt;/p&gt;
+
+&lt;h2 id=&quot;sharpness-metric&quot;&gt;Sharpness metric&lt;/h2&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\phi_{x,f}(\epsilon, A)=\frac{(max_{y \in C_\epsilon} f(x+Ay))-f(x)}{1+f(x)}\*100&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;x&lt;/em&gt; is the weight matrix, &lt;em&gt;f&lt;/em&gt; is a loss function that is &lt;em&gt;f(x)&lt;/em&gt; is the loss corresponding to the weight &lt;em&gt;x&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;To keep things simple, consider this: A is an identity matrix, &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt; is a parameter that defines the size of neighbourhood, &lt;script type=&quot;math/tex&quot;&gt;C_{\epsilon}&lt;/script&gt; is the set of all points defined by &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note: 
+In the paper, so as to not to be misled by the case when the maximum value of f occurs in a very small sub-space around x, experiments are reported for when &lt;em&gt;A&lt;/em&gt; is an Identity matrix and for a random &lt;em&gt;nxp&lt;/em&gt; matrix, where &lt;em&gt;p&lt;/em&gt; is the dimension of the manifold.&lt;br /&gt;
+When &lt;em&gt;A&lt;/em&gt; is not an identity matrix, but nxp matrix, then the points, &lt;em&gt;y&lt;/em&gt; are sampled in the random manifold.
+That way both the values in full space around &lt;em&gt;x&lt;/em&gt; and the sub-space spanned by the random manifolds are explored.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-does-the-metric-say&quot;&gt;What does the metric say?&lt;/h2&gt;
+
+&lt;p&gt;As expected, the number assigned by the metric is high in the case of LB as shown in the table below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/lb_vs_sb/metric_lb_sb.png&quot; alt=&quot;Sharpness Metric on LB and SB solution&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;how-is-sb-avoiding-this-solution&quot;&gt;How is SB avoiding this solution?&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/lb_vs_sb/sharpness_batch_size.png&quot; alt=&quot;Sharpness with batch size&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The blue lines in the plot above is the change in testing accuracy (The vertical axis to the left) as the batch size increases (X axis).&lt;/li&gt;
+  &lt;li&gt;The strokes in red capture the change in sharpness.&lt;/li&gt;
+  &lt;li&gt;Observe the sudden fall in testing accuracy in both the plots, at around a batch size of 1500 for plot on left and 500 for plot on the right, meaning that the noise in the gradient computation is no longer enough to escape the attraction from sharp minimizer.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;how-is-sb-avoiding-this-solution-continued&quot;&gt;How is SB avoiding this solution? [continued…]&lt;/h2&gt;
+
+&lt;p&gt;Answer: Noise.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;From the results reported in the previous section[slide], it appears that noise in the gradient pushes the iterates out of the basin of attraction of sharp minimizers and encourages movement towards a flatter minimizer where noise will not cause exit from that basin&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;can-we-patch-the-lb-method&quot;&gt;Can we patch the LB method?&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Dynamic Sampling:&lt;/strong&gt; Start with a small batch and increase the batch size. It is shown to work, but what’s the schedule?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;does-not-amount-to-reducing-the-sharpness-of-the-solution&quot;&gt;Does not amount to reducing the sharpness of the solution&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Data augmentation: Random transformations over the images: random rotations, translations, horizontal reflections, etc.; Basically, adding noise to the weight updates.&lt;/li&gt;
+  &lt;li&gt;Conservative training: Make good use of data in a given batch before moving on to the next batch, this involves more than one update on a single batch.&lt;/li&gt;
+  &lt;li&gt;Robust training: Classical approaches search for a lowest point in the valley, while these approaches attempt to lower an &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;-disc down the loss surface. Surprisingly, this method affected neither test accuracy nor sharpness.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;can-we-patch-the-lb-method-continued&quot;&gt;Can we patch the LB method? [continued…]&lt;/h2&gt;
+&lt;p&gt;Can we add noise to the gradients computed in LB method which will perhaps make it more explorative?
+The authors answered one such question asked by a reviewer [3]&lt;/p&gt;
+&lt;pre&gt;
+Thank you for your review. 
+We experimented with additive random Gaussian noise (both in gradients 
+and in iterates), noisy labels and noisy input-data. 
+However, despite significant tuning of the hyperparameters of the random noise, we did not observe any consistent improvements in testing error.  
+Overall, our feeling is that this needs deeper investigation and that LB methods may need to be modified in a more fundamental way to achieve good generalization.
+&lt;/pre&gt;
+
+&lt;p&gt;Note: There is a difference between noise and intelligent guess.&lt;/p&gt;
+
+&lt;h2 id=&quot;whats-next&quot;&gt;What’s next?&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Can it be analytically proved that the LB methods generally converge to the sharp minimizers of the training functions?&lt;/li&gt;
+  &lt;li&gt;How best to patch LB methods to avoid this problem (better weights initialization, neural network architecture, optimization algorithm or regulatory means)?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;understanding-deep-learning-requires-rethinking-generalization-best-paper-award-iclr-2017-4&quot;&gt;UNDERSTANDING DEEP LEARNING REQUIRES RETHINKING GENERALIZATION (Best Paper Award ICLR 2017) [4]&lt;/h2&gt;
+
+&lt;p&gt;How are deep networks able to generalize so well?&lt;/p&gt;
+
+&lt;h2 id=&quot;the-big-question&quot;&gt;The big question&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;The state-of-art networks that did well on CIFAR10 and ImageNet datasets when trained on the same dataset with randomized labels or pixels, converged to zero training error.&lt;/li&gt;
+  &lt;li&gt;This means that such networks have enough capacity to remember the data-points that they are trained on.&lt;/li&gt;
+  &lt;li&gt;Yet, they do not. In spite of having a perfectly valid solution (training loss 0), the one corresponding to remembering all the data, the optimization procedure unfailingly finds a better solution (the one with low generalization error). 
+What is causing this?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;randomization-tests&quot;&gt;Randomization tests&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/nnet_gen_how/random_tests.png&quot; alt=&quot;Randomization tests&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Average loss of training data goes to zero irrespective of the data transformations like: random labels, random/shuffled pixels.&lt;/li&gt;
+  &lt;li&gt;Results for random transformations is reported only for the case when there is no other explicit regularization.&lt;/li&gt;
+  &lt;li&gt;The results shown above are for the CIFAR10 dataset (which is smaller than Imagenet). On CIFAR10, smaller versions of the networks such as Inception, Alexnet, MLPs, that are designed for Imagenet task, are used. On Imagenet, the training error did not converge to 100%, but only 95.2 top-1 accuracy (which is still very good for million labels).&lt;/li&gt;
+  &lt;li&gt;The case of random labels take longer to converge than the case of random pixels which involves more randomization. This could be because in the case of random pixels, the images are well separated; in the case of random labels, the images are still correlated.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;can-the-traditional-approaches-provide-a-generalization-bound&quot;&gt;Can the traditional approaches provide a generalization bound?&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Rademacher Complexity (RC) and VC-dimension&lt;/strong&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\hat{\Re}_n(H)=E_{\sigma}[\sup_{h \in H} \frac{1}{n} \sum_{i=1}^{n}{\sigma_ih(x_i)}]&lt;/script&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\sigma_1&lt;/script&gt;…&lt;script type=&quot;math/tex&quot;&gt;\sigma_n&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;\in&lt;/script&gt; {&lt;script type=&quot;math/tex&quot;&gt;\pm 1&lt;/script&gt;} i.i.d. uniform random binary labels.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;RC measures the ability of a given hypothesis space, &lt;em&gt;H&lt;/em&gt;, to fit random binary labels, &lt;script type=&quot;math/tex&quot;&gt;\pm 1&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Since the networks are able to fit random labels perfectly, the RC measure would close on its upper bound, &lt;script type=&quot;math/tex&quot;&gt;\Re(H)\approx 1&lt;/script&gt;, and hence may fail to provide any reasonable generalization bound.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;We need generalization bound to identify solutions that generalize to ones that do not.&lt;/li&gt;
+  &lt;li&gt;The existing methods that bound VC-dimension or its continuous analog, fat-shattering dimension do not seem to explain the generalization behavior.&lt;/li&gt;
+  &lt;li&gt;The paper also mentions about weaker notions of uniform stability, but concludes that it is difficult to utilize these effectively. 
+They measure the sensitivity to replacing one of the data points.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This slide basically concludes that none of the existing complexity measures can give a reasonable generalization bound.&lt;br /&gt;
+You can skip this slide, and still understand the rest of them.&lt;/p&gt;
+
+&lt;h2 id=&quot;are-regularizers-responsible-for-generalization&quot;&gt;Are Regularizers responsible for Generalization?&lt;/h2&gt;
+&lt;p&gt;Experimented with three commonly used regularizers&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Data augmentation&lt;/strong&gt;: Transformations on the image like: random cropping, random perturbation of brightness, saturation, hue and contrast&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Weight decay&lt;/strong&gt;: an &lt;script type=&quot;math/tex&quot;&gt;l_2&lt;/script&gt; regularizer on the weights.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Dropout&lt;/strong&gt;: randomly dropping the output of a layer with a given probability.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;are-regularizers-responsible-for-generalization-continued&quot;&gt;Are Regularizers responsible for Generalization? [continued…]&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/nnet_gen_how/reg_in_gen.png&quot; alt=&quot;Do Regularizers help in Generalization&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note: The networks generalize fine with no regularizers (we all know that, though).&lt;br /&gt;
+The point is to rule out regularizers as “the” reason for generalization.&lt;/p&gt;
+
+&lt;h2 id=&quot;implicit-regularizers&quot;&gt;Implicit Regularizers?&lt;/h2&gt;
+&lt;p&gt;Two commonly used implicit regularizers are (a) early stopping (b) batch normalization.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/nnet_gen_how/imp_reg.png&quot; alt=&quot;Implicit Regularizers&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The shaded area is what could have been gained if stopped early.&lt;/li&gt;
+  &lt;li&gt;“Although not explicitly designed for regularization, batch normalization is usually found to improve the generalization performance”. The impact of batch norm is only 3-4% (figure 2b)
+In later sections, they show that SGD also does implicit regularization. It is specially handled.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;concluding-remarks-about-regularization&quot;&gt;Concluding remarks about regularization&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Explicit and implicit regularizers when properly tuned have improved the generalization performance consistently.&lt;/li&gt;
+  &lt;li&gt;However, it is unlikely that they are fundamental for generalization.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;expressivity-of-networks&quot;&gt;Expressivity of networks&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;The existing methods to compute expressivity only consider what functions over the domain can be represented irrespective of the sample size.&lt;/li&gt;
+  &lt;li&gt;This work proves a lower bound on size of the networks that can perform on a finite sample size.&lt;/li&gt;
+  &lt;li&gt;Theorem: There exists a two-layer neural network with ReLU activations and 2n + d weights that can represent any function on a sample of size n in d dimensions.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note: Expressivity of a network provides insight into what functions over the domain a network is capable of representing. 
+It is a fancy word for model complexity.&lt;/p&gt;
+
+&lt;p&gt;For example, AlexNet which is trained on ImageNet (1.2 million training images) has 60M parameters and more than one layer. 
+According to the theorem above, it is capable of representing any function over ImageNet including random labeling (effectively memorizing the data).&lt;/p&gt;
+
+&lt;p&gt;For the proof, they constructed a neural net with one hidden layer which has a width of &lt;em&gt;n&lt;/em&gt;. 
+Since &lt;em&gt;n&lt;/em&gt; can be very large, they also provide a construction such that the network has width O(n/k) and k layers.&lt;/p&gt;
+
+&lt;h2 id=&quot;is-sgd-responsible-for-generalization&quot;&gt;Is SGD responsible for generalization?&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;The solution obtained by SGD in the linear case is looked at, to better understand the behavior of its solution.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In the linear case&lt;/p&gt;
+
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;min_{w \in \mathbb{R}^d} \frac{1}{n} \sum_{i=1}^nloss(w^Tx_i, y_i)&lt;/script&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If &lt;script type=&quot;math/tex&quot;&gt;d\geq n&lt;/script&gt;, there are several solutions. Does SGD find a generalizable solution in the face of several possible solutions?&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The updates of SGD at each step are of the form &lt;script type=&quot;math/tex&quot;&gt;w_{t+1} \leftarrow w_{t}-\eta e_tx_{i_t}&lt;/script&gt;. The final solution can be written as &lt;script type=&quot;math/tex&quot;&gt;w=X^T\alpha&lt;/script&gt;. 
+This reduces to
+&lt;script type=&quot;math/tex&quot;&gt;XX^T\alpha = y&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;XX^T&lt;/script&gt; is the kernel gram matrix.&lt;/li&gt;
+  &lt;li&gt;The equation above can be solved exactly for at least small datasets.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The solution found by solving the equation above for MNIST and CIFAR10 dataset have an error rate (best) of 1.2% and 15% respectively.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;It can be proved that the solution obtained by SGD (or the equation) is of minimum norm. 
+That is of all the solutions that exactly fit the data, SGD will often converge to the solution with minimum norm.
+By doing so, SGD behaves like an implicit regularizer.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Minimum norm isn’t always a good thing&lt;/strong&gt;: “On MNIST data, the l2-norm of the minimum norm solution with no preprocessing is approximately 220. With wavelet preprocessing, the norm jumps to 390. Yet the test error drops by a factor of 2”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Openreview has some interesting discussion on this section [5]&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;The effective capacity of several networks is large enough to shatter the training data, and yet they do fine on test data. 
+It is still a missing piece of the puzzle as to what the agent is responsible.&lt;/li&gt;
+  &lt;li&gt;Yet to discover formal measures under which these enormous models are simple and finally explain the generalization.&lt;/li&gt;
+  &lt;li&gt;A key takeaway is that none of the regularization methods or model capacity is responsible for the generalization behavior and, perhaps, it is the dynamics of the optimization procedure that is causing this.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;a-case-study&quot;&gt;A Case study&lt;/h2&gt;
+&lt;p&gt;An implementation of the scaled-down AlexNet for CIFAR10 described in the second paper is available as a &lt;a href=&quot;https://github.com/tensorflow/models/blob/master/slim/nets/cifarnet.py&quot;&gt;tensorflow model&lt;/a&gt; (perhaps implemented by this team itself).&lt;/p&gt;
+
+&lt;p&gt;I trained this network on the true CIFAR10 dataset and with pixels randomized in CIFAR10.
+The parameter configuration is as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-txt&quot;&gt;optimizer: SGD
+momentum: 0.9
+learning rate: 0.1
+learning rate decay factor: 0.9
+dropout: None
+weight_decay: 0
+input augmentation: None
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;alexnet-on-randomized-cifar10&quot;&gt;AlexNet on Randomized CIFAR10&lt;/h2&gt;
+&lt;p&gt;I found that the convergence on this dataset is extremely sensitive to regularization.
+Failed to converge in each of the following cases:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;learning rate of 0.1 rather than the suggested 0.01&lt;/li&gt;
+  &lt;li&gt;weight decay: 0.004&lt;/li&gt;
+  &lt;li&gt;dropout: 0.5&lt;/li&gt;
+  &lt;li&gt;any bit of data augmentation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note: My claims are to be taken with a pinch of salt. 
+These are only my observations, but not tested with rigor.&lt;/p&gt;
+
+&lt;h3 id=&quot;it-did-memorize-the-dataset&quot;&gt;It did memorize the dataset&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/expt/cifar10_rnd_90K.png&quot; alt=&quot;Loss when SGD is used&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note: This is when the model is trained on CIFAR10 with randomized labels.&lt;/p&gt;
+
+&lt;p&gt;In the case when I missed the first line in the image preprocessing, the loss behavior is shown in the image below.&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;image&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;255.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;image&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;per_image_standardization&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/slides/expt/cifar_rnd_300K.png&quot; alt=&quot;When not properly normalized&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note: Just did not converge even after 300K iterations.&lt;/p&gt;
+
+&lt;h3 id=&quot;characteristics-of-the-solution-learned&quot;&gt;Characteristics of the solution learned&lt;/h3&gt;
+
+&lt;h4 id=&quot;model-learned-on-true-data&quot;&gt;Model learned on true data&lt;/h4&gt;
+
+&lt;p&gt;Smoothness metric: 29.821 &lt;script type=&quot;math/tex&quot;&gt;\pm&lt;/script&gt; 0.250&lt;/p&gt;
+
+&lt;h4 id=&quot;model-learned-on-randomized-pixels&quot;&gt;Model learned on randomized pixels&lt;/h4&gt;
+
+&lt;p&gt;Smoothness metric: 263.928 &lt;script type=&quot;math/tex&quot;&gt;\pm&lt;/script&gt; 3.141&lt;/p&gt;
+
+&lt;p&gt;Note: * The reported smoothness metric is averaged over three runs (the number to the right of this value is the standard deviation), with parameters: 100 neighbors considered in hyper-sphere given by &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;=e-3. &lt;em&gt;Cross Entropy loss&lt;/em&gt; is used in the place of the function, f.&lt;/p&gt;
+
+&lt;p&gt;The value assigned by the smoothness metric [1] is orders of magnitude bigger than in the case of model learned with randomized pixels.&lt;/p&gt;
+
+&lt;p&gt;It is also shown in [1] that SGD updates have noise that will keep it away from such valleys. 
+I strongly believe this to be one of the reasons why the solution found by SGD in the case of true data generalizes well; Because SGD cannot precisely navigate down the valley to find the solution that corresponds to over-fitting [1]. 
+In the case of random pixels, since there is no better solution, SGD manages to find it (the over-fitting solution), perhaps.&lt;/p&gt;
+
+&lt;p&gt;Note: The implicit assumption I made here is that the smoothness metric of the solutions that corresponds to over-fitting solution on true data will have similar smoothness metric as the solution found in the case of randomized labels (the over-fit)&lt;/p&gt;
+
+&lt;h2 id=&quot;interesting-remarkscritics-from-the-audience&quot;&gt;Interesting remarks/critics from the audience&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;l_2&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;l_1&lt;/script&gt; norm should be used with caution. They both penalize weights such that those that do not affect the loss much, remain low. Although, it may reduce the model complexity; It is not guaranteed that such regularizations can find a better solution. Consider the case when it is desired that some parameters are unbounded or take a finite non-zero value. In a nutshell, such weight penalties should not be used as a one-size-fits-all manner.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When a model that has 100% accuracy on the train set, but only 84% on the test set; A model with 16% generalization error is considered an over-fit, at least for the traditional Machine Learning models. Why is that not the case here?&lt;br /&gt;
+ I agree that the solution with 16% generalization error may not be the best and can be improved, but it is not considered an overfit, at least not according to the authors. The authors consider over-fitting the case when the performance on test set is no better than chance.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Why are sharp minimizers bad for generalization?&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;There are several explanations and links provided in section 2.1 of [1].
+According to the minimum description length (MDL) theory, the models that require fewer bits to describe, generalize better. Since flat minima can be specified with lower precision, they have lower MDL.&lt;/li&gt;
+      &lt;li&gt;An alternate explanation is provided in [6]. In [6], the authors have proposed a variant of SGD called Entropy-SGD which is specially designed to find flat minimas. The following explanation is provided.&lt;br /&gt;
+If we consider a prior on the parameters, say a Gaussian prior with fixed variance, the marginal likelihood of data would be higher in the case of flatter minima. 
+&lt;script type=&quot;math/tex&quot;&gt;P(x) = P(x/\theta)P(\theta)&lt;/script&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://openreview.net/pdf?id=H1oyRlYgg&quot;&gt;ON LARGE-BATCH TRAINING FOR DEEP LEARNING: GENERALIZATION GAP AND SHARP MINIMA&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Yann LeCun’s Efficient BackProp.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://openreview.net/forum?id=H1oyRlYgg&amp;amp;noteId=H1oyRlYgg&quot;&gt;Discussion on Openreview for 1 above&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://openreview.net/pdf?id=Sy8gdB9xx&quot;&gt;UNDERSTANDING DEEP LEARNING REQUIRES RETHINKING GENERALIZATION&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://openreview.net/forum?id=Sy8gdB9xx&amp;amp;noteId=Sy8gdB9xx&quot;&gt;Discussion on Openreview for above&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arxiv.org/pdf/1611.01838.pdf&quot;&gt;ENTROPY-SGD: BIASING GRADIENT DESCENT INTO WIDE VALLEYS&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;proof-of-theorem-extra-slide&quot;&gt;Proof of theorem (Extra slide)&lt;/h2&gt;
+&lt;p&gt;Theorem: &lt;em&gt;There exists a two-layer neural network with ReLU activations and 2n + d weights that can represent any function on a sample of size n in d dimensions.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Sketchy proof: For weight vector w, b &lt;script type=&quot;math/tex&quot;&gt;\in \mathbb{R}^n&lt;/script&gt; and a &lt;script type=&quot;math/tex&quot;&gt;\in \mathbb{R}^d&lt;/script&gt;, consider the function to learn: c: &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}^n\rightarrow \mathbb{R}&lt;/script&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;c(x) = \sum_{j=1}{w_j max(\langle a,x\rangle-b_j, 0)}&lt;/script&gt;
+
+&lt;p&gt;The weights from input to the layer are shared: &lt;em&gt;a&lt;/em&gt;.
+The activations from the layer are combined with the vector: &lt;em&gt;w&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Note: For proof, look at [4]; I am only interested in an intuitive explanation.&lt;/p&gt;
+
+&lt;p&gt;Basically, the plan is to make a different number of neurons to activate (classic trick).
+That is &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+b_1&lt;x_1&lt;...b_n&lt;x_n %]]&gt;&lt;/script&gt;, which means the number of activated neurons for the input &lt;script type=&quot;math/tex&quot;&gt;x_i&lt;/script&gt; is i.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;x_i&lt;/script&gt;s are the inputs to the first layer that is &lt;script type=&quot;math/tex&quot;&gt;\langle a,z_i\rangle&lt;/script&gt;.
+Since &lt;em&gt;a&lt;/em&gt; and &lt;em&gt;b&lt;/em&gt; are both unknowns, choose a value for a and for each of the distinct values of &lt;script type=&quot;math/tex&quot;&gt;\langle a,z_i\rangle&lt;/script&gt;, choose the value for &lt;em&gt;&lt;script type=&quot;math/tex&quot;&gt;b_i&lt;/script&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally, we have &lt;script type=&quot;math/tex&quot;&gt;y=Aw&lt;/script&gt; where A is &lt;script type=&quot;math/tex&quot;&gt;max(\langle a,x\rangle-b_j, 0)&lt;/script&gt;. 
+The construction is such that A is full rank, hence &lt;em&gt;w&lt;/em&gt; is solvable.&lt;/p&gt;
+
+&lt;p&gt;Note: The weights learned by a simple network on XOR data would show the same behavior, &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+b_1&lt;x_1...b_n&lt;x_n %]]&gt;&lt;/script&gt;; That is why I call it the classic trick.&lt;/p&gt;
+
+&lt;h2 id=&quot;contact&quot;&gt;Contact&lt;/h2&gt;
+
+&lt;p&gt;Vihari Piratla&lt;/p&gt;
+
+&lt;p&gt;IIT Bombay&lt;/p&gt;
+
+&lt;p&gt;viharipiratla@gmail.com&lt;/p&gt;
+</description>
+        <pubDate>Fri, 17 Mar 2017 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000/deep-learning/training/2017/03/17/mlr-iitb.html</link>
+        <guid isPermaLink="true">http://localhost:4000/deep-learning/training/2017/03/17/mlr-iitb.html</guid>
+        
+        
+        <category>deep-learning</category>
+        
+        <category>training</category>
+        
+      </item>
     
       <item>
         <title>Notes from Geoffrey Hinton's Neural Networks course on Coursera</title>
@@ -2128,9 +2697,9 @@ SBNs on the other hand suffer from the explainining away property because the po
   &lt;li&gt;The sole purpose of momentum is to speed up learning, but not to provide any qualitative improvements.&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Fri, 10 Feb 2017 15:19:56 +0530</pubDate>
-        <link>http://localhost:4000/deep-learning/notes/coursera/2017/02/10/notes.html</link>
-        <guid isPermaLink="true">http://localhost:4000/deep-learning/notes/coursera/2017/02/10/notes.html</guid>
+        <pubDate>Wed, 15 Mar 2017 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000/deep-learning/notes/coursera/2017/03/15/notes.html</link>
+        <guid isPermaLink="true">http://localhost:4000/deep-learning/notes/coursera/2017/03/15/notes.html</guid>
         
         
         <category>deep-learning</category>
@@ -2275,9 +2844,9 @@ One-shot learning is quite hard because of the interference effects due to the t
 &lt;code class=&quot;highlighter-rouge&quot;&gt;Architectures with augmented memory capacities, such as Neural Turing Machines (NTMs), offer the ability to quickly encode and retrieve new information, and hence can potentially obviate the downsides of conventional models.&lt;/code&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Wed, 01 Feb 2017 13:59:39 +0530</pubDate>
-        <link>http://localhost:4000/deep-learning/speaker-adaption/adaptive-neural-networks/2017/02/01/NN_adaptation.html</link>
-        <guid isPermaLink="true">http://localhost:4000/deep-learning/speaker-adaption/adaptive-neural-networks/2017/02/01/NN_adaptation.html</guid>
+        <pubDate>Wed, 15 Mar 2017 00:00:00 +0530</pubDate>
+        <link>http://localhost:4000/deep-learning/speaker-adaption/adaptive-neural-networks/2017/03/15/NN_adaptation.html</link>
+        <guid isPermaLink="true">http://localhost:4000/deep-learning/speaker-adaption/adaptive-neural-networks/2017/03/15/NN_adaptation.html</guid>
         
         
         <category>deep-learning</category>
@@ -2285,34 +2854,6 @@ One-shot learning is quite hard because of the interference effects due to the t
         <category>speaker-adaption</category>
         
         <category>adaptive-neural-networks</category>
-        
-      </item>
-    
-      <item>
-        <title>Welcome to Jekyll!</title>
-        <description>&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
-
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
-
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 25 Oct 2016 16:42:25 +0530</pubDate>
-        <link>http://localhost:4000/jekyll/update/2016/10/25/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">http://localhost:4000/jekyll/update/2016/10/25/welcome-to-jekyll.html</guid>
-        
-        
-        <category>jekyll</category>
-        
-        <category>update</category>
         
       </item>
     

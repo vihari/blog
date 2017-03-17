@@ -4,6 +4,9 @@ title:  Summary of two papers from ICLR'17
 categories: deep-learning training
 ---
 
+- TOC
+{:toc}
+
 ## Introduction ##
 Things you should know before we proceed
 * Gradient descent optimization procedures -- weight updates proportional to the gradient. Several optimizers such as Rmsprop, SGD, momentum, ADAM exist. They are all slight variations that generally only affect the convergence rate and can sometimes find a better solution.
@@ -15,7 +18,7 @@ Things you should know before we proceed
 * Generalization error: The difference between the error on test and train datasets.
 
 ## Tricks to avoid over-fitting ##
-* Explicit regularization: minimizing $l_2$ or $l_1$ norm on weights. Dropout. Input augmentation for example, adding noise to the input or random transformations over the input like random crops
+* Explicit regularization: minimizing $$l_2$$ or $$l_1$$ norm on weights. Dropout. Input augmentation for example, adding noise to the input or random transformations over the input like random crops
 * Implicit regularization: batch norm and early stopping
 
 For further reference, see these [slides](http://vision.stanford.edu/teaching/cs231b_spring1415/slides/alexnet_tugce_kyunghee.pdf)
@@ -28,14 +31,14 @@ We only care about ReLU (Rectified Linear Units) activation function for this ma
 ## Common Image classification datasets ##
 [CIFAR10](https://www.cs.toronto.edu/~kriz/cifar.html): 60,000 images, 10 classes, 32x32 resolution, 6,000 images per class
 
-![CIFAR10](/assets/md_slides/_images/cifar10.png)
+![CIFAR10](/assets/images/slides/cifar10.png)
 
 
 ## [Imagenet](http://cs.stanford.edu/people/karpathy/cnnembed/cnn_embed_1k.jpg) ##
 
 1.2 million images, 1000 classes, ~ 300x300 resolution
 
-<img alt="Imagenet" src="/assets/md_slides/_images/imagenet.jpg" style="width:500px" />
+<img alt="Imagenet" src="/assets/images/slides/imagenet.jpg" style="width:500px" />
 
 ([Image courtesy](http://cs.stanford.edu/people/karpathy/cnnembed/cnn_embed_1k.jpg))
 
@@ -113,11 +116,11 @@ It is conjectured that the LB methods lack explorative properties and settle at 
 
 ## What are sharp and flat minimizers? ##
 
-> A flat minimizer $\bar{x}$ is one for which the function varies slowly in a relatively large neighborhood of $\bar{x}$. In contrast, a sharp minimizer $\hat{x}$ is such that the function increases rapidly in a small neighborhood of $\hat{x }$.
+> A flat minimizer $$\bar{x}$$ is one for which the function varies slowly in a relatively large neighborhood of $$\bar{x}$$. In contrast, a sharp minimizer $$\hat{x}$$ is such that the function increases rapidly in a small neighborhood of $$\hat{x }$$.
 
 
 ## What are sharp and flat minimizers? [continued...] ##
-![Sharp vs Flat minimizer](/assets/md_slides/_images/lb_vs_sb/sharp_vs_flat_minimizer.png)
+![Sharp vs Flat minimizer](/assets/images/slides/lb_vs_sb/sharp_vs_flat_minimizer.png)
 
 
 
@@ -125,7 +128,7 @@ It is conjectured that the LB methods lack explorative properties and settle at 
 
 Six multi-class classification network configurations are considered.
 
-![Network configurations](/assets/md_slides/_images/lb_vs_sb/network_configs.png)
+![Network configurations](/assets/images/slides/lb_vs_sb/network_configs.png)
 
 
 ## Targeted experiments [continued...] ##
@@ -135,13 +138,13 @@ Six multi-class classification network configurations are considered.
 
 
 ## Targeted experiments [continued...] ##
-![Dataset sizes](/assets/md_slides/_images/lb_vs_sb/dataset_sizes.png)
+![Dataset sizes](/assets/images/slides/lb_vs_sb/dataset_sizes.png)
 
 
 
 ## Recognizing the problem ##
 
-![Train and test accuracy](/assets/md_slides/_images/lb_vs_sb/train_and_test_acc.png)
+![Train and test accuracy](/assets/images/slides/lb_vs_sb/train_and_test_acc.png)
 
 Note: 
 The numbers in the table are written in "mean+standard deviation" format summarized across five trails.  
@@ -150,7 +153,7 @@ Observe that the difference between LB and SB is starker in test accuracy than i
 
 
 ## Over-fitting is not the problem ##
-![Overfitting not a problem](/assets/md_slides/_images/lb_vs_sb/not_overfitting.png)
+![Overfitting not a problem](/assets/images/slides/lb_vs_sb/not_overfitting.png)
 
 Note: In both SB and LB cases, the network is trained so as not to deteriorate on validation data.
 
@@ -158,30 +161,30 @@ Note: In both SB and LB cases, the network is trained so as not to deteriorate o
 
 ## An evidence for if the sharpness of minima is a problem ##
 * The nature of minima can be visualized with something called parametric 1-D plots.
-* If ${x_l}^{\ast}$ and ${x_s}^{\ast}$ are the solutions (weights) corresponding to the large and small batch methods, then the 1-D parametric plots look at the nature of all solutions in 
-$\alpha\*{x_l}^{\ast}+(1-\alpha)\*{x_s}^{\ast}$. 
-* $\alpha \in [-1, 2]$ for the sake of experiment. 
+* If $${x_l}^{\ast}$$ and $${x_s}^{\ast}$$ are the solutions (weights) corresponding to the large and small batch methods, then the 1-D parametric plots look at the nature of all solutions in 
+$$\alpha\*{x_l}^{\ast}+(1-\alpha)\*{x_s}^{\ast}$$. 
+* $$\alpha \in [-1, 2]$$ for the sake of experiment. 
 
-$\alpha$=1 corresponds to the solution of large batch and $\alpha$=0 to the small batch.
+$$\alpha$$=1 corresponds to the solution of large batch and $$\alpha$$=0 to the small batch.
 
 
 ## An evidence for if the sharpness of minima is a problem [continued...] ##
-![1-D Parametric plots](/assets/md_slides/_images/lb_vs_sb/param_plots.png)
+![1-D Parametric plots](/assets/images/slides/lb_vs_sb/param_plots.png)
 
 Note: 
 There is an interesting correlation between the table 2 and this figure that I cannot help, but notice.  
-The network configurations when arranged according to the difference in test accuracy with LB and SB methods will fall into: $F_1$<$C_2$<$C_1$<$C_3$<$F_2$<$C_4$  
+The network configurations when arranged according to the difference in test accuracy with LB and SB methods will fall into: $$F_1$$<$$C_2$$<$$C_1$$<$$C_3$$<$$F_2$$<$$C_4$$  
 Now, take a look at the solid blue line in each of the figures.
-$F_1$ is the most flat of all at $\alpha=1$ and $C_4$ at $\alpha=1$ is a valley with long walls on both the sides.
+$$F_1$$ is the most flat of all at $$\alpha=1$$ and $$C_4$$ at $$\alpha=1$$ is a valley with long walls on both the sides.
 
 
 
 ## Sharpness metric ##
 
-$$\phi\_{x,f}(\epsilon, A)=\frac{(max\_{y \in C_\epsilon} f(x+Ay))-f(x)}{1+f(x)}\*100$$
+$$\phi_{x,f}(\epsilon, A)=\frac{(max_{y \in C_\epsilon} f(x+Ay))-f(x)}{1+f(x)}\*100$$
 
 * *x* is the weight matrix, *f* is a loss function that is *f(x)* is the loss corresponding to the weight *x*.
-* To keep things simple, consider this: A is an identity matrix, $\epsilon$ is a parameter that defines the size of neighbourhood, $C_{\epsilon}$ is the set of all points defined by $\epsilon$
+* To keep things simple, consider this: A is an identity matrix, $$\epsilon$$ is a parameter that defines the size of neighbourhood, $$C_{\epsilon}$$ is the set of all points defined by $$\epsilon$$
 
 Note: 
 In the paper, so as to not to be misled by the case when the maximum value of f occurs in a very small sub-space around x, experiments are reported for when *A* is an Identity matrix and for a random *nxp* matrix, where *p* is the dimension of the manifold.  
@@ -194,14 +197,14 @@ That way both the values in full space around *x* and the sub-space spanned by t
 
 As expected, the number assigned by the metric is high in the case of LB as shown in the table below. 
 
-![Sharpness Metric on LB and SB solution](/assets/md_slides/_images/lb_vs_sb/metric_lb_sb.png)
+![Sharpness Metric on LB and SB solution](/assets/images/slides/lb_vs_sb/metric_lb_sb.png)
 
 
 
 
 ## How is SB avoiding this solution? ##
 
-![Sharpness with batch size](/assets/md_slides/_images/lb_vs_sb/sharpness_batch_size.png)
+![Sharpness with batch size](/assets/images/slides/lb_vs_sb/sharpness_batch_size.png)
 
 Note:
 * The blue lines in the plot above is the change in testing accuracy (The vertical axis to the left) as the batch size increases (X axis). 
@@ -223,7 +226,7 @@ Answer: Noise.
 ### Does not amount to reducing the sharpness of the solution ###
 * Data augmentation: Random transformations over the images: random rotations, translations, horizontal reflections, etc.; Basically, adding noise to the weight updates.
 * Conservative training: Make good use of data in a given batch before moving on to the next batch, this involves more than one update on a single batch.
-* Robust training: Classical approaches search for a lowest point in the valley, while these approaches attempt to lower an $\epsilon$-disc down the loss surface. Surprisingly, this method affected neither test accuracy nor sharpness.
+* Robust training: Classical approaches search for a lowest point in the valley, while these approaches attempt to lower an $$\epsilon$$-disc down the loss surface. Surprisingly, this method affected neither test accuracy nor sharpness.
 
 
 
@@ -248,7 +251,8 @@ Note: There is a difference between noise and intelligent guess.
 
 
 
-#### UNDERSTANDING DEEP LEARNING REQUIRES RETHINKING GENERALIZATION (Best Paper Award ICLR 2017) [4]####
+## UNDERSTANDING DEEP LEARNING REQUIRES RETHINKING GENERALIZATION (Best Paper Award ICLR 2017) [4] ##
+
 How are deep networks able to generalize so well?
 
 
@@ -263,7 +267,7 @@ How are deep networks able to generalize so well?
 
 ## Randomization tests ##
 
-![Randomization tests](/assets/md_slides/_images/nnet_gen_how/random_tests.png)
+![Randomization tests](/assets/images/slides/nnet_gen_how/random_tests.png)
 
 Note:
 * Average loss of training data goes to zero irrespective of the data transformations like: random labels, random/shuffled pixels.
@@ -275,10 +279,10 @@ Note:
 
 ## Can the traditional approaches provide a generalization bound? ##
 **Rademacher Complexity (RC) and VC-dimension**
-$$\hat{\Re}\_n(H)=E\_{\sigma}[\sup\_{h \in H} \frac{1}{n} \sum\_{i=1}^{n}{\sigma\_ih(x\_i)}]$$
-$\sigma\_1$...$\sigma\_n$ $\in$ {$\pm 1$} i.i.d. uniform random binary labels.  
-* RC measures the ability of a given hypothesis space, *H*, to fit random binary labels, $\pm 1$
-* Since the networks are able to fit random labels perfectly, the RC measure would close on its upper bound, $\Re(H)\approx 1$, and hence may fail to provide any reasonable generalization bound.
+$$\hat{\Re}_n(H)=E_{\sigma}[\sup_{h \in H} \frac{1}{n} \sum_{i=1}^{n}{\sigma_ih(x_i)}]$$
+$$\sigma_1$$...$$\sigma_n$$ $$\in$$ {$$\pm 1$$} i.i.d. uniform random binary labels.  
+* RC measures the ability of a given hypothesis space, *H*, to fit random binary labels, $$\pm 1$$
+* Since the networks are able to fit random labels perfectly, the RC measure would close on its upper bound, $$\Re(H)\approx 1$$, and hence may fail to provide any reasonable generalization bound.
 
 Note: 
 * We need generalization bound to identify solutions that generalize to ones that do not.
@@ -294,13 +298,13 @@ You can skip this slide, and still understand the rest of them.
 ## Are Regularizers responsible for Generalization? ##
 Experimented with three commonly used regularizers
 * **Data augmentation**: Transformations on the image like: random cropping, random perturbation of brightness, saturation, hue and contrast
-* **Weight decay**: an $l_2$ regularizer on the weights.
+* **Weight decay**: an $$l_2$$ regularizer on the weights.
 * **Dropout**: randomly dropping the output of a layer with a given probability. 
 
 
 ## Are Regularizers responsible for Generalization? [continued...] ##
 
-![Do Regularizers help in Generalization](/assets/md_slides/_images/nnet_gen_how/reg_in_gen.png)
+![Do Regularizers help in Generalization](/assets/images/slides/nnet_gen_how/reg_in_gen.png)
 
 Note: The networks generalize fine with no regularizers (we all know that, though).  
 The point is to rule out regularizers as "the" reason for generalization.
@@ -310,7 +314,7 @@ The point is to rule out regularizers as "the" reason for generalization.
 ## Implicit Regularizers? ##
 Two commonly used implicit regularizers are (a) early stopping (b) batch normalization.
 
-![Implicit Regularizers](/assets/md_slides/_images/nnet_gen_how/imp_reg.png)
+![Implicit Regularizers](/assets/images/slides/nnet_gen_how/imp_reg.png)
 
 Note: 
 * The shaded area is what could have been gained if stopped early.
@@ -346,14 +350,14 @@ Since *n* can be very large, they also provide a construction such that the netw
 * The solution obtained by SGD in the linear case is looked at, to better understand the behavior of its solution.
 * In the linear case
 
-  $$min\_{w \in \mathbb{R}^d} \frac{1}{n} \sum\_{i=1}^nloss(w^Tx\_i, y\_i)$$
-* If $d\geq n$, there are several solutions. Does SGD find a generalizable solution in the face of several possible solutions?
+  $$min_{w \in \mathbb{R}^d} \frac{1}{n} \sum_{i=1}^nloss(w^Tx_i, y_i)$$
+* If $$d\geq n$$, there are several solutions. Does SGD find a generalizable solution in the face of several possible solutions?
 
 
-* The updates of SGD at each step are of the form $w\_{t+1} \leftarrow w\_{t}-\eta e\_tx\_{i\_t}$. The final solution can be written as $w=X^T\alpha$. 
+* The updates of SGD at each step are of the form $$w_{t+1} \leftarrow w_{t}-\eta e_tx_{i_t}$$. The final solution can be written as $$w=X^T\alpha$$. 
   This reduces to
   $$XX^T\alpha = y$$
-* $XX^T$ is the kernel gram matrix.
+* $$XX^T$$ is the kernel gram matrix.
 * The equation above can be solved exactly for at least small datasets.
 * The solution found by solving the equation above for MNIST and CIFAR10 dataset have an error rate (best) of 1.2% and 15% respectively.
 
@@ -407,7 +411,7 @@ These are only my observations, but not tested with rigor.
 
 ### It did memorize the dataset ###
 
-![Loss when SGD is used](/assets/md_slides/_images/expt/cifar10_rnd_90K.png)
+![Loss when SGD is used](/assets/images/slides/expt/cifar10_rnd_90K.png)
 
 Note: This is when the model is trained on CIFAR10 with randomized labels.
 
@@ -417,7 +421,7 @@ In the case when I missed the first line in the image preprocessing, the loss be
 image = image/255.
 image = tf.image.per_image_standardization(image)
 ```
-![When not properly normalized](/assets/md_slides/_images/expt/cifar_rnd_300K.png)
+![When not properly normalized](/assets/images/slides/expt/cifar_rnd_300K.png)
 
 Note: Just did not converge even after 300K iterations.
 
@@ -427,13 +431,13 @@ Note: Just did not converge even after 300K iterations.
 
 #### Model learned on true data ####
 
-Smoothness metric: 29.821 $\pm$ 0.250  
+Smoothness metric: 29.821 $$\pm$$ 0.250  
 
 #### Model learned on randomized pixels ####
 
-Smoothness metric: 263.928 $\pm$ 3.141  
+Smoothness metric: 263.928 $$\pm$$ 3.141  
 
-Note: * The reported smoothness metric is averaged over three runs (the number to the right of this value is the standard deviation), with parameters: 100 neighbors considered in hyper-sphere given by $\epsilon$=e-3. *Cross Entropy loss* is used in the place of the function, f. 
+Note: * The reported smoothness metric is averaged over three runs (the number to the right of this value is the standard deviation), with parameters: 100 neighbors considered in hyper-sphere given by $$\epsilon$$=e-3. *Cross Entropy loss* is used in the place of the function, f. 
 
 
 The value assigned by the smoothness metric [1] is orders of magnitude bigger than in the case of model learned with randomized pixels. 
@@ -447,7 +451,7 @@ Note: The implicit assumption I made here is that the smoothness metric of the s
 
 
 ## Interesting remarks/critics from the audience ##
-* $l\_2$ and $l\_1$ norm should be used with caution. They both penalize weights such that those that do not affect the loss much, remain low. Although, it may reduce the model complexity; It is not guaranteed that such regularizations can find a better solution. Consider the case when it is desired that some parameters are unbounded or take a finite non-zero value. In a nutshell, such weight penalties should not be used as a one-size-fits-all manner.
+* $$l_2$$ and $$l_1$$ norm should be used with caution. They both penalize weights such that those that do not affect the loss much, remain low. Although, it may reduce the model complexity; It is not guaranteed that such regularizations can find a better solution. Consider the case when it is desired that some parameters are unbounded or take a finite non-zero value. In a nutshell, such weight penalties should not be used as a one-size-fits-all manner.
 
 
 * When a model that has 100% accuracy on the train set, but only 84% on the test set; A model with 16% generalization error is considered an over-fit, at least for the traditional Machine Learning models. Why is that not the case here?  
@@ -462,7 +466,7 @@ Note: The implicit assumption I made here is that the smoothness metric of the s
   $$P(x) = P(x/\theta)P(\theta)$$
 
 
-# References #
+## References ##
 
  1. [ON LARGE-BATCH TRAINING FOR DEEP LEARNING: GENERALIZATION GAP AND SHARP MINIMA](https://openreview.net/pdf?id=H1oyRlYgg)
  2. Yann LeCun's Efficient BackProp.
@@ -475,7 +479,7 @@ Note: The implicit assumption I made here is that the smoothness metric of the s
 ## Proof of theorem (Extra slide) ##
 Theorem: *There exists a two-layer neural network with ReLU activations and 2n + d weights that can represent any function on a sample of size n in d dimensions.*
 
-Sketchy proof: For weight vector w, b $\in \mathbb{R}^n$ and a $\in \mathbb{R}^d$, consider the function to learn: c: $\mathbb{R}^n\rightarrow \mathbb{R}$
+Sketchy proof: For weight vector w, b $$\in \mathbb{R}^n$$ and a $$\in \mathbb{R}^d$$, consider the function to learn: c: $$\mathbb{R}^n\rightarrow \mathbb{R}$$
 
 $$c(x) = \sum_{j=1}{w_j max(\langle a,x\rangle-b_j, 0)}$$
 
@@ -486,19 +490,20 @@ Note: For proof, look at [4]; I am only interested in an intuitive explanation.
 
 
 Basically, the plan is to make a different number of neurons to activate (classic trick).
-That is $b\_1<x\_1<...b\_n<x\_n$, which means the number of activated neurons for the input $x_i$ is i.
+That is $$b_1<x_1<...b_n<x_n$$, which means the number of activated neurons for the input $$x_i$$ is i.
 
-$x_i$s are the inputs to the first layer that is $\langle a,z\_i\rangle$.
-Since *a* and *b* are both unknowns, choose a value for a and for each of the distinct values of $\langle a,z\_i\rangle$, choose the value for *$b_i$*.
+$$x_i$$s are the inputs to the first layer that is $$\langle a,z_i\rangle$$.
+Since *a* and *b* are both unknowns, choose a value for a and for each of the distinct values of $$\langle a,z_i\rangle$$, choose the value for *$$b_i$$*.
 
-Finally, we have $y=Aw$ where A is $max(\langle a,x\rangle-b_j, 0)$. 
+Finally, we have $$y=Aw$$ where A is $$max(\langle a,x\rangle-b_j, 0)$$. 
 The construction is such that A is full rank, hence *w* is solvable.
 
-Note: The weights learned by a simple network on XOR data would show the same behavior, $b\_1<x\_1...b\_n<x\_n$; That is why I call it the classic trick. 
+Note: The weights learned by a simple network on XOR data would show the same behavior, $$b_1<x_1...b_n<x_n$$; That is why I call it the classic trick. 
 
 
 
-### Contact ###
+## Contact ##
+
 Vihari Piratla 
 
 IIT Bombay
