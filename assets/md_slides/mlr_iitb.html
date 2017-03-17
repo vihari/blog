@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>mlr_iitb.html</title>
+
+</head>
+
+<body>
+
+<h6 id="introduction">Introduction</h6>
+<p>Things you should know before we proceed
+* Gradient descent optimization procedures; error is back-propagated for weight updates. Several optimizers such as Rmsprop, SGD, momentum, ADAMexist. They are all slight variations that generally only affect the convergence rate.
+* Optimization parameter: batch size. Some variants of optimization consider the errors on all the data available (full batch learning), some consider a (relatively) small batch (mini-batch) or only one example in each step (stochastic).</p>
+
+<h6 id="introduction-continued">Introduction [continued&#8230;]</h6>
+
+<ul>
+  <li>Generalization error: The difference between the error on test and train datasets.</li>
+</ul>
+
+<p>Tricks to avoid over-fitting
+* Explicit regularization: minimizing $l_2$ or $l_1$ norm on weights. Dropout. Input augmentation for example adding noise to the input or random transformations over the input like random crops
+* Implicit regularization: batch norm and early stopping</p>
+
+<p>For further reference, see these <a href="http://vision.stanford.edu/teaching/cs231b_spring1415/slides/alexnet_tugce_kyunghee.pdf">slides</a></p>
+
+<p>Note: We recognize over-fitting when the error on validation set starts increasing.<br />
+We only care about ReLU (Rectified Linear Units) activation function for this material.</p>
+
+<h6 id="common-image-classification-datasets">Common Image classification datasets</h6>
+<p><a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR10</a>: 60,000 images, 10 classes, 32x32 resolution, 6,000 images per class</p>
+
+<p><img src="md_slides/_images/cifar10.png" alt="CIFAR10" /></p>
+
+<h6 id="imagenethttpcsstanfordedupeoplekarpathycnnembedcnnembed1kjpg"><a href="http://cs.stanford.edu/people/karpathy/cnnembed/cnn_embed_1k.jpg">Imagenet</a></h6>
+
+<p>1.2 million images, 1000 classes, 300x300 resolution</p>
+
+<p><img alt="Imagenet" src="md_slides/_images/imagenet.jpg" style="width:500px" /></p>
+
+<p>(<a href="http://cs.stanford.edu/people/karpathy/cnnembed/cnn_embed_1k.jpg">Image courtesy</a>)</p>
+
+<h6 id="popular-neral-nets-for-image-classification">Popular neral nets for Image Classification</h6>
+<p><strong>AlexNet</strong> and <strong>Inception</strong> are two networks that are designed for performance on the ImageNet.</p>
+
+<p>AlexNet:
+- 7 hidden weight layers
+- 650K neurons
+- 60M parameters
+- 630M connections</p>
+
+<p>Inception is much bigger and deeper.</p>
+
+<p>For more information, consult this <a href="https://culurciello.github.io/tech/2016/06/04/nets.html">blog</a></p>
+
+<h6 id="on-large-batch-training-for-deep-learning-generalization-gap-and-sharp-minima-1">On Large-Batch Training For Deep Learning: Generalization Gap and Sharp Minima [1]</h6>
+
+<h6 id="large-batch-lb-vs-small-batch-sb">Large batch (LB) vs small batch (SB)</h6>
+
+<p>Large batches are typically in the order of thousands and batch sizes less than 512 are considered small.</p>
+
+<p>From Yann LeCun&#8217;s &#8220;Efficient Backprop&#8221;[2]</p>
+
+<blockquote>
+  <p>Advantages of Stochastic Learning</p>
+
+  <ol>
+    <li>Stochastic learning is usually much faster than batch learning.</li>
+    <li>Stochastic learning also often results in better solutions.</li>
+    <li>Stochastic learning can be used for tracking changes.</li>
+  </ol>
+</blockquote>
+
+<p>Notes:</p>
+
+<ul>
+  <li>It is not new that stochastic learning gives better solution.</li>
+  <li>(The 3rd advantage above:) Stochastic learning can deal with the case when the function being modelled changes with time. When we average over all the data, the changes go undetected. Online learning if &#8220;operate properly&#8221; can give good approximation results.</li>
+</ul>
+
+<h6 id="large-batch-vs-small-batch">Large batch vs small batch</h6>
+
+<blockquote>
+  <p>Advantages of Batch Learning</p>
+
+  <ol>
+    <li>Conditions of convergence are well understood.</li>
+    <li>Many acceleration techniques (e.g. conjugate gradient) only operate in batch learning.</li>
+    <li>Theoretical analysis of the weight dynamics and convergence rates are simpler.</li>
+  </ol>
+</blockquote>
+
+<p>Notes:
+The very reason why SGD is useful, noise, also works to the advantage of batch learning.<br />
+The main disadvantage that is emphasized in this paper is the difficulty in parallelizing the SGD update because (1) sequential nature of the updates (2) the update step does not contain enough computation that it reaps the benefit of parallelization.<br />
+By reducing the time per update step, it is possible to reduce the computation time since the number of update steps required in a batch learning is lesser.</p>
+
+<h6 id="why-is-large-batch-bad">Why is Large Batch bad?</h6>
+
+<p>Although, optimization with large and small batch lead to similar performance on train set, solution obtained by large batch suffers on test set.</p>
+
+<ul>
+  <li>Possible reasons:
+    <ul>
+      <li>LB methods over-fit the model; <!-- .element: class="fragment" --></li>
+      <li>LB methods are attracted to saddle points; <!-- .element: class="fragment" --></li>
+      <li>LB methods lack the explorative properties of SB methods and tend to zoom-in on the minimizer closest to the initial point; <!-- .element: class="fragment" --></li>
+      <li>SB and LB methods converge to qualitatively different minimizers with differing generalization properties. <!-- .element: class="fragment" --></li>
+    </ul>
+  </li>
+  <li>The data presented in this paper supports the last two causes. <!-- .element: class="fragment" --></li>
+</ul>
+
+<h6 id="guess">Guess</h6>
+
+<p>It is conjectured that the LB methods lack explorative properties and settle at a sharp minimizer which may perform well on training data, but may fail on test data.</p>
+
+<h6 id="what-are-sharp-and-flat-minimizers">What are sharp and flat minimizers?</h6>
+
+<blockquote>
+  <p>A flat minimizer $\bar{x}$ is one for which the function varies slowly in a relatively large neighborhood of $\bar{x}$. In contrast, a sharp minimizer $\hat{x}$ is such that the function increases rapidly in a small neighborhood of $\hat{x }$.</p>
+</blockquote>
+
+<h6 id="what-are-sharp-and-flat-minimizers-continued">What are sharp and flat minimizers? [continued&#8230;]</h6>
+<p><img src="md_slides/_images/lb_vs_sb/sharp_vs_flat_minimizer.png" alt="Sharp vs Flat minimizer" /></p>
+
+<h6 id="targeted-experiments">Targeted experiments</h6>
+
+<p>Six multi-class classification netweork configurations are considered.</p>
+
+<p><img src="md_slides/_images/lb_vs_sb/network_configs.png" alt="Network configurations" /></p>
+
+<h6 id="targeted-experiments-continued">Targeted experiments [continued&#8230;]</h6>
+
+<ul>
+  <li>For LB methods, 10% of the training data is chosen as the batch size (which means the batch size varied from 5,000 on MNIST and ~72,000 on TIMIT dataset). For SB, the batch size is set to 256 for all the experiments.</li>
+  <li>Experiments with any of the optimizers: ADAM, ADGRAD, SGD, adaQN gave similar results, all the results reported are with ADAM optimizer.</li>
+</ul>
+
+<h6 id="targeted-experiments-continued-1">Targeted experiments [continued&#8230;]</h6>
+<p><img src="md_slides/_images/lb_vs_sb/dataset_sizes.png" alt="Dataset sizes" /></p>
+
+<h6 id="recognizing-the-problem">Recognizing the problem</h6>
+
+<p><img src="md_slides/_images/lb_vs_sb/train_and_test_acc.png" alt="Train and test accuracy" /></p>
+
+<p>Note: 
+The numbers in the table are written in &#8220;mean+standard deviation&#8221; format summarized across five trails.<br />
+Observe that the difference between LB and SB is stark in test accuracy than in train.</p>
+
+<h6 id="over-fitting-is-not-the-problem">Over-fitting is not the problem</h6>
+<p><img src="md_slides/_images/lb_vs_sb/not_overfitting.png" alt="Overfitting not a problem" /></p>
+
+<p>Note: In both SB and LB cases, the network is trained so as not to deteriorate on test data.</p>
+
+<h6 id="an-evidence-for-if-sharpness-of-minima-is-a-problem">An evidence for if sharpness of minima is a problem</h6>
+<ul>
+  <li>The nature of minima can be visualized with something called parametric 1-D plots.</li>
+  <li>If ${x_l}^{\ast}$ and ${x_s}^{\ast}$ are the solutions (weights) corresponding to the large and small batch methods, then the 1-D parametric plots look at the nature of all solutions in 
+$\alpha*{x_l}^{\ast}+(1-\alpha)*{x_s}^{\ast}$.</li>
+  <li>$\alpha \in [-1, 2]$ for the sake of experiment.</li>
+</ul>
+
+<p>$\alpha$=1 corresponds to the solution of large batch and $\alpha$=0 to the small batch.</p>
+
+<h6 id="an-evidence-for-if-sharpness-of-minima-is-a-problem-continued">An evidence for if sharpness of minima is a problem [continued&#8230;]</h6>
+<p><img src="md_slides/_images/lb_vs_sb/param_plots.png" alt="1-D Parametric plots" /></p>
+
+<p>Note: 
+There is an interesting correlation between the table 2 and this figure that I cannot help, but notice.<br />
+The network configurations when arranged according to the difference in test accuracy with LB and SB methods will fall into: $F_1$&lt;$C_2$&lt;$C_1$&lt;$C_3$&lt;$F_2$&lt;$C_4$<br />
+Now, take a look at the solid blue line in each of the figures.
+$F_1$ is the most flat of all at $\alpha=1$ and $C_4$ at $\alpha=1$ is a valley with long walls on both the sides.</p>
+
+<h6 id="sharpness-metric">Sharpness metric</h6>
+
+<script type="math/tex; mode=display">\phi\_{x,f}(\epsilon, A)=\frac{(max\_{y \in C_\epsilon} f(x+Ay))-f(x)}{1+f(x)}\*100</script>
+
+<ul>
+  <li><em>x</em> is the weight matrix, <em>f</em> is the loss function that is <em>f(x)</em> is the loss corresponding to the weight <em>x</em>.</li>
+  <li>To keep things simple, consider this: A is an identity matrix, $\epsilon$ is a parameter that defines the size of neighbourhood, $C_{\epsilon}$ is the set of all points defined by $\epsilon$</li>
+</ul>
+
+<p>Note: 
+In the paper, so as to not to be misled by the case when the maximum value of f occurs in a very small sub-space around x, experiments are reported for when <em>A</em> is an Identity matrix and for a random <em>nxp</em> matrix, where <em>p</em> is the dimension of the manifold.<br />
+That way both the values in full space around <em>x</em> and the sub-space spanned by the random manifolds are explored.</p>
+
+<h6 id="what-does-the-metric-say">What does the metric say?</h6>
+
+<p>As expected, the number assigned by the metric is high in the case of LB as shown in the table below.</p>
+
+<p><img src="md_slides/_images/lb_vs_sb/metric_lb_sb.png" alt="Sharpness Metric on LB and SB solution" /></p>
+
+<h6 id="how-is-sb-avoiding-this-solution">How is SB avoiding this solution?</h6>
+
+<p><img src="md_slides/_images/lb_vs_sb/sharpness_batch_size.png" alt="Sharpness with batch size" /></p>
+
+<p>Note:
+* The blue lines in the plot above is the change in testing accuracy (The vertical axis to the left) as the batch size increases (X axis). 
+* The strokes in red capture the change in sharpness.
+* Observe the sudden fall in testing accuracy in both the plots, at around batch size of 1500 for plot on left and 500 for plot on right, meaning that the noise in the gradient computation is no longer enough to escape the attraction from sharp minimizer.</p>
+
+<h6 id="how-is-sb-avoiding-this-solution-continued">How is SB avoiding this solution? [continued&#8230;]</h6>
+
+<p>Answer: Noise.
+&gt; From the results reported in the previous section[slide], it appears that noise in the gradient pushes the iterates out of the basin of attraction of sharp minimizers and encourages movement towards a flatter minimizer where noise will not cause exit from that basin</p>
+
+<h6 id="can-we-patch-the-lb-method">Can we patch the LB method?</h6>
+<ul>
+  <li>
+    <p><strong>Dynamic Sampling</strong></p>
+  </li>
+  <li>Data augmentation</li>
+  <li>Conservative training</li>
+  <li>Robust training</li>
+</ul>
+
+<h6 id="can-we-patch-the-lb-method-continued">Can we patch the LB method? [continued&#8230;]</h6>
+<p>Can we add noise to the gradients computed in LB method which will perhaps make it more explorative?
+The authors answered one such question asked by a reviewer [3]</p>
+<pre>
+Thank you for your review. 
+We experimented with additive random Gaussian noise (both in gradients 
+and in iterates), noisy labels and noisy input-data. 
+However, despite significant tuning of the hyperparameters of the 
+random noise, we did not observe any consistent improvements in testing 
+error.  
+Overall, our feeling is that this needs deeper investigation and that 
+LB methods may need to be modified in a more fundamental way to achieve 
+good generalization.
+</pre>
+
+<p>Note: There is a difference between noise and intelligent guess.</p>
+
+<h6 id="whats-next">What&#8217;s next?</h6>
+<ul>
+  <li>Can it be analytically proved that the LB methods generally converge to the sharp minimizers of the training functions?</li>
+  <li>How best to patch LB methods to avoid this problem (better weights initialization, neural network architecture, optimization algorithm or regulatory means)?</li>
+</ul>
+
+<h4 id="understanding-deep-learning-requires-rethinking-generalization-best-paper-award-iclr-2017-4">UNDERSTANDING DEEP LEARNING REQUIRES RETHINKING GENERALIZATION (Best Paper Award ICLR 2017) [4]</h4>
+
+<h6 id="the-big-question">The big question</h6>
+<ul>
+  <li>The state-of-art networks that did well on CIFAR10 and ImageNet datasets when trained on the same dataset with randomized labels or images, converged to zero training error.</li>
+  <li>This means that such networks have enough capacity to remember the data-points that they are trained on.</li>
+  <li>Yet, they do not. Inspite of having a perfectly valid solution (training loss 0), the one corresponding to remembering all the data, the optimization procedure unfailingly finds a better solution (the one with low generalization error). 
+What is causing this?</li>
+</ul>
+
+<h6 id="randomization-tests">Randomization tests</h6>
+
+<p><img src="md_slides/_images/nnet_gen_how/random_tests.png" alt="Randomization tests" /></p>
+
+<p>Note:
+* Average loss on training data goes to zero irrespective of the data transformations like: random labels, random/shuffled pixels.
+* Results for random transformations is reported only for the case when there is no other explicit regularization.
+* The results shown above are for CIFAR10 dataset (which is smaller than Imagenet). On CIFAR10, smaller versions of the networks such as Inception, Alexnet, MLPs, that are designed for Imagenet task, are used. On Imagenet, the training error did not converge to 100%, but only 95.2 top-1 accuracy (which is still very good for million labels).
+* The case of random labels take longer to converge than the case of random pixels which involves more randomization. This could be because in the case of random pixels, the images are well separated; in the case of random labels, the images are still correlated.</p>
+
+<h6 id="can-the-traditional-approaches-reason-the-observed-generalization">Can the traditional approaches reason the observed generalization</h6>
+<p><strong>Rademacher Complexity (RC) and VC-dimension</strong>
+<script type="math/tex">\hat{\Re}\_n(H)=E\_{\sigma}[\sup\_{h \in H} \frac{1}{n} \sum\_{i=1}^{n}{\sigma\_ih(x\_i)}]</script>
+$\sigma_1$&#8230;$\sigma_n$ $\in$ {$\pm 1$} i.i.d. uniform random binary labels.<br />
+* RC measures the ability of a given hypothesis space, <em>H</em>, to fit random binary labels, $\pm 1$
+* Since the networks are able to fit random labels perfectly, the RC measure would close on its upper bound, $\Re(H)\approx 1$, and hence may fail to provide any reasonable generalization bound.</p>
+
+<p>Note: 
+The existing methods that bound VC-dimension or its continous analog, fat-shattering dimension do not seem to explain the generalization behavior.<br />
+The paper also mentions about weaker notions of uniform stability, but concludes that it is difficult to utilize these effectively.
+This slide basically concludes that none of the existing complexity measures can give a reasonable generalization bound.<br />
+You can skip this slide, and still understand the rest of them.</p>
+
+<h6 id="are-regularizers-responsible-for-generalization">Are Regularizers responsible for Generalization?</h6>
+<p>Experimented with three commonly used regularizers
+* <strong>Data augmentation</strong>: Transformations on the image like: random cropping, random perturbation of brightness, saturation, hue and contrast
+* <strong>Weight decay</strong>: an $l_2$ regularizer on the weights.
+* <strong>Dropout</strong>: randomly dropping the output of a layer with a given probability. (only Inception uses any)</p>
+
+<h6 id="are-regularizers-responsible-for-generalization-continued">Are Regularizers responsible for Generalization? [continued&#8230;]</h6>
+
+<p><img src="md_slides/_images/nnet_gen_how/reg_in_gen.png" alt="Do Regularizers help in Generalization" /></p>
+
+<p>Note: The networks generalize fine with no regularizers (we all know that, though).<br />
+The point is to rule out regularizers as the reason for generalization.</p>
+
+<h6 id="implicit-regularizers">Implicit Regularizers?</h6>
+<p>Two commonly used implicit regularizers are (a) early stopping (b) batch normalization.</p>
+
+<p><img src="md_slides/_images/nnet_gen_how/imp_reg.png" alt="Implicit Regularizers" /></p>
+
+<p>Note: 
+* The shaded area is what could have been gained if stopped early.
+* &#8220;Although not explicitly designed for regularization, batch normalization is usually found to improve the generalization performance&#8221;. The impact of batch norm is only 3-4% (figure 2b)
+In the later sections, they show that SGD also does implicit regularization. It is specially handled.</p>
+
+<h6 id="concluding-remarks-about-regularization">Concluding remarks about regularization</h6>
+<ul>
+  <li>Explicit and implicit regularizers when properly tuned have improved the generalization performance consistently.</li>
+  <li>However, it is unlikely that they are fundamental reason for generalization.</li>
+</ul>
+
+<h6 id="expressivity-of-networks">Expressivity of networks</h6>
+<ul>
+  <li>The existing methods to compute expressivity only consider what functions over the domain can be represented irrespective of the sample size.</li>
+  <li>This work proves a lower bound on the networks that can perform on a finite sample size.</li>
+  <li>Theorem: There exists a two-layer neural network with ReLU activations and 2n + d weights that can represent any function on a sample of size n in d dimensions.</li>
+</ul>
+
+<p>Note: Expressivity of a network provides insight into what functions over the domain a network is capable of representing. 
+It is a fancy word for model complexity.</p>
+
+<p>For example, AlexNet which is trained on ImageNet (1.2 million training images) has 60M parameters and more than one layer. 
+According to the theorem above, it is capable of representing any function over ImageNet including random labeling (effectively memorizing the data).</p>
+
+<p>For the proof, they constructed a neural net with one hidden layer which has a width of <em>n</em>. 
+Since <em>n</em> can be very large, they also provide a construction such that the network has width O(n/k) and k layers.</p>
+
+<h6 id="sgd-is-it-you">SGD, is it you?</h6>
+<ul>
+  <li>The solution obtained by SGD in the linear case is looked at, to better understand the behaviour of its solution.</li>
+  <li>
+    <p>In the linear case</p>
+
+    <script type="math/tex; mode=display">min\_{w \in \mathbb{R}^d} \frac{1}{n} \sum\_{i=1}^nloss(w^Tx\_i, y\_i)</script>
+  </li>
+  <li>
+    <p>If $d\geq n$, there are several solutions. Does SGD find a generalizable solution in the face of several possible solutions?</p>
+  </li>
+  <li>The updates of SGD at each step are of the form $w_{t+1} \leftarrow w_{t}-\eta e_tx_{i_t}$. The final solution can be written as $w=X^T\alpha$. 
+This reduces to
+<script type="math/tex">XX^T\alpha = y</script></li>
+  <li>$XX^T$ is the kernal gram matrix.</li>
+  <li>The equation above can be solved exactly for at least small datasets.</li>
+  <li>
+    <p>The solution found by solving the equation above for MNIST and CIFAR10 dataset have an error rate (best) of 1.2% and 15% respectively.</p>
+  </li>
+  <li>It can be proved that the solution obtained by SGD (or the equation) is of minimum norm. 
+That is of all the solutions that exactly fit the data, SGD will often converge to the solution with minimum norm.
+By doing so, SGD behaves like an implicit regularizer.</li>
+  <li><strong>Minimum norm isn&#8217;t always a good thing</strong>: &#8220;On MNIST data, the l2-norm of the minimum norm solution with no preprocessing is approximately 220. With wavelet preprocessing, the norm jumps to 390. Yet the test error drops by a factor of 2&#8221;</li>
+</ul>
+
+<p>Note: I have several issues with this section of the paper.
+* It is shown that SGD finds a better solution by looking for one with minimum norm. We don&#8217;t know if minimum norm is always a good thing as pointed out by this paper itself.
+* We do not know if other optimizers are also doing this. 
+* As shown by the first paper I discussed in this content, LB methods get stuck in solutions which are probably of lesser norm because LB takes careful steps and sticks close to the origin, which turn out to have bad effect on generalization.
+  The power of SGD is in finding a flat minimizer, rather.
+* I do not understand the l2 norm argument, 220 and 390 one. When pre-processed, the input space changes, the values found: &#8220;220&#8221; and &#8220;390&#8221; are obviously minimum values in their respective spaces. The fact that the value in the second case is greater than the former means that the solution in first case is no longer a solution in the second case. I have no idea what point they are trying to make, but in general l2 regularization isn&#8217;t the answer because all such regularization do not impact much the test error.
+* There are a lot of details missing from the paper, in the case of MNIST and CIFAR, d&#171;n, they have transformed the input space to reverse it. No idea what they are.
+* More interesting discussion can be found at [5]</p>
+
+<h6 id="conclusion">Conclusion</h6>
+<ul>
+  <li>The effective capacity of several networks is large enough to shatter the training data, and yet they do fine on test data. 
+It is still a missing piece of puzzle as to what agent is acting the Wizard.</li>
+  <li>Yet to discover formal measures under which these enormous models are simple and finally explain the generalization.</li>
+</ul>
+
+<h6 id="a-case-study">A Case study</h6>
+<p>An implementation of the scaled-down ALexNet for CIFAR10 described in the paper is available as a <a href="https://github.com/tensorflow/models/blob/master/slim/nets/cifarnet.py">tensorflow model</a> (perhaps implemented by this team).</p>
+
+<p>I trained this network on true CIFAR10 dataset and with pixels randomized in CIFAR10.
+The parameter configuration is as follows:
+<code>txt
+optimizer: SGD
+momentum: 0.9
+learning rate: 0.1
+learning rate decay factor: 0.9
+dropout: None
+weight_decay: 0
+input augmentation: None
+</code></p>
+
+<h6 id="alexnet-on-randomized-cifar10">AlexNet on Randomized CIFAR10</h6>
+<p>The training loss with such a dataset is extremely sensitive to the regularization.
+Failed to converge in the following cases:
+* learning rate, suggested is 0.01 and I tried with 0.1
+* weight decay: 0.004
+* dropout: 0.5
+* any bit of data augmentation</p>
+
+<p>Note: My claims are to be taken with a pinch of salt. 
+These are only my observations, but not tested with rigor.</p>
+
+<h6 id="it-did-memorize-the-dataset">It did memorize the dataset</h6>
+
+<p><img src="md_slides/_images/expt/cifar10_rnd_90K.png" alt="Loss when SGD is used" /></p>
+
+<h6 id="characteristics-of-the-solution-learned">Characteristics of the solution learned</h6>
+
+<p>Model learned on true data:<br />
+<strong>Frobenius norm</strong> 9.600; max: 50.636;min: 0.110<br />
+<strong>Smoothness metric</strong> 30.008 $\pm$ 0.380</p>
+
+<p>Model learned on randomized pixels:<br />
+<strong>Frobenius norm</strong> 10.795; max: 50.955; min: 0.063<br />
+<strong>Smoothness metric</strong> 271.234 $\pm$ 4.053</p>
+
+<p>Note: * The frobenius norm reported is the average over all the training varaibles.
+* The smoothness metric is reported with average and std. deviation across three runs with parameters: $\eps$=e-3, 100 neighbours in a hyper-sphere around the solution. <em>cross entropy loss</em> is used in the place of the function, f.</p>
+
+<p>The value assigned by the smoothness metric [1] is order of magnitude bigger than in the case of model learned with randomized pixels.</p>
+
+<p>It is also shown in [1] that SGD updates have noise that will keep it away from such valleys. 
+I strongly believe this to be one of the reasons why the solution found by SGD in the case of true data generalizes well because SGD cannot precisely navigate down the valley. 
+In the case of random pixels, since there is no better solution, SGD manages to find it, perhaps.</p>
+
+<p>Notes: * I did not find surprising the fact that many of the networks are capable of fitting any random function over the training data.</p>
+
+<h1 id="references">References</h1>
+
+<ol>
+  <li><a href="https://openreview.net/pdf?id=H1oyRlYgg">ON LARGE-BATCH TRAINING FOR DEEP LEARNING: GENERALIZATION GAP AND SHARP MINIMA</a></li>
+  <li>Yann LeCun&#8217;s Efficient BackProp.</li>
+  <li>https://openreview.net/forum?id=H1oyRlYgg&amp;noteId=H1oyRlYgg</li>
+  <li><a href="https://openreview.net/pdf?id=Sy8gdB9xx">UNDERSTANDING DEEP LEARNING REQUIRES RETHINKING GENERALIZATION</a></li>
+  <li>https://openreview.net/forum?id=Sy8gdB9xx&amp;noteId=Sy8gdB9xx</li>
+</ol>
+
+<h6 id="proof-of-theorem-extra-slide">Proof of theorem (Extra slide)</h6>
+<p>Theorem: <em>There exists a two-layer neural network with ReLU activations and 2n + d weights that can represent any function on a sample of size n in d dimensions.</em></p>
+
+<p>Sketchy proof: For weight vector w, b $\in \mathbb{R}^n$ and a $\in \mathbb{R}^d$, consider the function to learn: c: $\mathbb{R}^n\rightarrow \mathbb{R}$</p>
+
+<script type="math/tex; mode=display">c(x) = \sum_{j=1}{w_j max(\langle a,x\rangle-b_j, 0)}</script>
+
+<p>The weights from input to the layer are shared: <em>a</em>.
+The activations from the layer are combined with the vector: <em>w</em>.</p>
+
+<p>Note: For proof look at [4]; I am only interested in an intuitive explanation.</p>
+
+<p>Basically, the plan is to make different number of neurons to activate (classic trick).
+That is $b_1&lt;x_1&lt;&#8230;b_n&lt;x_n$, which means the number of activated neurons for the input $x_i$ is i.</p>
+
+<p>$x_i$s are the inputs to the first layer that is $\langle a,z_i\rangle$.
+Since <em>a</em> and <em>b</em> are both unknowns, choose a value for a and for each of the distinct values of $\langle a,z_i\rangle$, choose the value for <em>$b_i$</em>.</p>
+
+<p>Finally, we have $y=Aw$ where A is $max(\langle a,x\rangle\rangle-b_j, 0)$. 
+The constuction is such that A is full rank, hence <em>w</em> is solvable.</p>
+
+<p>Note: For example, the weights learned by such network on XOR input would show the same behavior.</p>
+Warning: No link definition for link ID 'continued...' found on line 7
+Warning: No link definition for link ID '1' found on line 53
+Warning: No link definition for link ID '2' found on line 61
+Warning: No link definition for link ID 'continued...' found on line 114
+Warning: No link definition for link ID 'continued...' found on line 126
+Warning: No link definition for link ID 'continued...' found on line 132
+Warning: No link definition for link ID '-1, 2' found on line 158
+Warning: No link definition for link ID 'continued...' found on line 163
+Warning: No link definition for link ID 'continued...' found on line 206
+Warning: No link definition for link ID 'slide' found on line 209
+Warning: No link definition for link ID 'continued...' found on line 222
+Warning: No link definition for link ID '3' found on line 224
+Warning: No link definition for link ID '4' found on line 247
+Warning: No link definition for link ID 'continued...' found on line 293
+Warning: No link definition for link ID '5' found on line 365
+Warning: No link definition for link ID '1' found on line 425
+Warning: No link definition for link ID '1' found on line 427
+Warning: No link definition for link ID '4' found on line 455
+
+</body>
+</html>
