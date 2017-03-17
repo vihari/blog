@@ -11,7 +11,7 @@
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="http://localhost:4000/deep-learning/training/2017/03/17/mlr-iitb.html">
-  <link rel="alternate" type="application/rss+xml" title="Vihari Piratla blog" href="http://localhost:4000/feed.xml">
+  <link rel="alternate" type="application/rss+xml" title="Vihari Piratla's blog" href="http://localhost:4000/feed.xml">
 </head>
 
 
@@ -23,7 +23,7 @@
 
   <div class="wrapper">
 
-    <a class="site-title" href="/">Vihari Piratla blog</a>
+    <a class="site-title" href="/">Vihari Piratla's blog</a>
 
     <nav class="site-nav">
       <a href="#" class="menu-icon">
@@ -281,7 +281,8 @@ Observe that the difference between LB and SB is starker in test accuracy than i
 
 <p>Note: 
 There is an interesting correlation between the table 2 and this figure that I cannot help, but notice.<br />
-The network configurations when arranged according to the difference in test accuracy with LB and SB methods will fall into: <script type="math/tex">F_1</script>&lt;<script type="math/tex">C_2</script>&lt;<script type="math/tex">C_1</script>&lt;<script type="math/tex">C_3</script>&lt;<script type="math/tex">F_2</script>&lt;<script type="math/tex">C_4</script><br />
+The network configurations when arranged according to the difference in test accuracy with LB and SB methods will fall into: <script type="math/tex">% <![CDATA[
+F_1<C_2<C_1<C_3<F_2<C_4 %]]></script><br />
 Now, take a look at the solid blue line in each of the figures.
 <script type="math/tex">F_1</script> is the most flat of all at <script type="math/tex">\alpha=1</script> and <script type="math/tex">C_4</script> at <script type="math/tex">\alpha=1</script> is a valley with long walls on both the sides.</p>
 
@@ -380,8 +381,7 @@ What is causing this?</li>
 
 <h2 id="can-the-traditional-approaches-provide-a-generalization-bound">Can the traditional approaches provide a generalization bound?</h2>
 <p><strong>Rademacher Complexity (RC) and VC-dimension</strong>
-<script type="math/tex">\hat{\Re}_n(H)=E_{\sigma}[\sup_{h \in H} \frac{1}{n} \sum_{i=1}^{n}{\sigma_ih(x_i)}]</script>
-<script type="math/tex">\sigma_1</script>…<script type="math/tex">\sigma_n</script> <script type="math/tex">\in</script> {<script type="math/tex">\pm 1</script>} i.i.d. uniform random binary labels.</p>
+<script type="math/tex">\hat{\Re}_n(H)=E_{\sigma}[\sup_{h \in H} \frac{1}{n} \sum_{i=1}^{n}{\sigma_ih(x_i)}] \sigma_1...\sigma_n \in {\pm 1}</script> i.i.d. uniform random binary labels.</p>
 <ul>
   <li>RC measures the ability of a given hypothesis space, <em>H</em>, to fit random binary labels, <script type="math/tex">\pm 1</script></li>
   <li>Since the networks are able to fit random labels perfectly, the RC measure would close on its upper bound, <script type="math/tex">\Re(H)\approx 1</script>, and hence may fail to provide any reasonable generalization bound.</li>
@@ -619,12 +619,12 @@ b_1<x_1...b_n<x_n %]]></script>; That is why I call it the classic trick.</p>
 
   <div class="wrapper">
 
-    <h2 class="footer-heading">Vihari Piratla blog</h2>
+    <h2 class="footer-heading">Vihari Piratla's blog</h2>
 
     <div class="footer-col-wrapper">
       <div class="footer-col footer-col-1">
         <ul class="contact-list">
-          <li>Vihari Piratla blog</li>
+          <li>Vihari Piratla's blog</li>
           <li><a href="mailto:viharipiratla[at]GMAIL">viharipiratla[at]GMAIL</a></li>
         </ul>
       </div>
@@ -644,8 +644,7 @@ b_1<x_1...b_n<x_n %]]></script>; That is why I call it the classic trick.</p>
       </div>
 
       <div class="footer-col footer-col-3">
-        <p>By a researcher in computer science.
-</p>
+        <p>This is my research blog; that includes my notes and pointers.</p>
       </div>
     </div>
 

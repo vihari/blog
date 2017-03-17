@@ -8,8 +8,7 @@
 # Site settings
 title: Vihari Piratla's blog
 email: viharipiratla[at]GMAIL
-description: > # this means to ignore newlines until "baseurl:"
-	     This is my research blog; that includes my notes and pointers.
+description: This is my research blog; that includes my notes and pointers.
 baseurl: "" # the subpath of your site, e.g. /blog
 github_username:  vihari
 

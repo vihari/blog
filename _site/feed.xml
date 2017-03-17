@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Vihari Piratla blog</title>
-    <description>By a researcher in computer science.
-</description>
+    <title>Vihari Piratla's blog</title>
+    <description>This is my research blog; that includes my notes and pointers.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 17 Mar 2017 23:25:41 +0530</pubDate>
-    <lastBuildDate>Fri, 17 Mar 2017 23:25:41 +0530</lastBuildDate>
+    <pubDate>Sat, 18 Mar 2017 00:04:17 +0530</pubDate>
+    <lastBuildDate>Sat, 18 Mar 2017 00:04:17 +0530</lastBuildDate>
     <generator>Jekyll v3.3.0</generator>
     
       <item>
@@ -237,7 +236,8 @@ Observe that the difference between LB and SB is starker in test accuracy than i
 
 &lt;p&gt;Note: 
 There is an interesting correlation between the table 2 and this figure that I cannot help, but notice.&lt;br /&gt;
-The network configurations when arranged according to the difference in test accuracy with LB and SB methods will fall into: &lt;script type=&quot;math/tex&quot;&gt;F_1&lt;/script&gt;&amp;lt;&lt;script type=&quot;math/tex&quot;&gt;C_2&lt;/script&gt;&amp;lt;&lt;script type=&quot;math/tex&quot;&gt;C_1&lt;/script&gt;&amp;lt;&lt;script type=&quot;math/tex&quot;&gt;C_3&lt;/script&gt;&amp;lt;&lt;script type=&quot;math/tex&quot;&gt;F_2&lt;/script&gt;&amp;lt;&lt;script type=&quot;math/tex&quot;&gt;C_4&lt;/script&gt;&lt;br /&gt;
+The network configurations when arranged according to the difference in test accuracy with LB and SB methods will fall into: &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+F_1&lt;C_2&lt;C_1&lt;C_3&lt;F_2&lt;C_4 %]]&gt;&lt;/script&gt;&lt;br /&gt;
 Now, take a look at the solid blue line in each of the figures.
 &lt;script type=&quot;math/tex&quot;&gt;F_1&lt;/script&gt; is the most flat of all at &lt;script type=&quot;math/tex&quot;&gt;\alpha=1&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;C_4&lt;/script&gt; at &lt;script type=&quot;math/tex&quot;&gt;\alpha=1&lt;/script&gt; is a valley with long walls on both the sides.&lt;/p&gt;
 
@@ -336,8 +336,7 @@ What is causing this?&lt;/li&gt;
 
 &lt;h2 id=&quot;can-the-traditional-approaches-provide-a-generalization-bound&quot;&gt;Can the traditional approaches provide a generalization bound?&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Rademacher Complexity (RC) and VC-dimension&lt;/strong&gt;
-&lt;script type=&quot;math/tex&quot;&gt;\hat{\Re}_n(H)=E_{\sigma}[\sup_{h \in H} \frac{1}{n} \sum_{i=1}^{n}{\sigma_ih(x_i)}]&lt;/script&gt;
-&lt;script type=&quot;math/tex&quot;&gt;\sigma_1&lt;/script&gt;…&lt;script type=&quot;math/tex&quot;&gt;\sigma_n&lt;/script&gt; &lt;script type=&quot;math/tex&quot;&gt;\in&lt;/script&gt; {&lt;script type=&quot;math/tex&quot;&gt;\pm 1&lt;/script&gt;} i.i.d. uniform random binary labels.&lt;/p&gt;
+&lt;script type=&quot;math/tex&quot;&gt;\hat{\Re}_n(H)=E_{\sigma}[\sup_{h \in H} \frac{1}{n} \sum_{i=1}^{n}{\sigma_ih(x_i)}] \sigma_1...\sigma_n \in {\pm 1}&lt;/script&gt; i.i.d. uniform random binary labels.&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;RC measures the ability of a given hypothesis space, &lt;em&gt;H&lt;/em&gt;, to fit random binary labels, &lt;script type=&quot;math/tex&quot;&gt;\pm 1&lt;/script&gt;&lt;/li&gt;
   &lt;li&gt;Since the networks are able to fit random labels perfectly, the RC measure would close on its upper bound, &lt;script type=&quot;math/tex&quot;&gt;\Re(H)\approx 1&lt;/script&gt;, and hence may fail to provide any reasonable generalization bound.&lt;/li&gt;
