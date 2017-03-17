@@ -173,7 +173,7 @@ $$\alpha$$=1 corresponds to the solution of large batch and $$\alpha$$=0 to the 
 
 Note: 
 There is an interesting correlation between the table 2 and this figure that I cannot help, but notice.  
-The network configurations when arranged according to the difference in test accuracy with LB and SB methods will fall into: $$F_1$$<$$C_2$$<$$C_1$$<$$C_3$$<$$F_2$$<$$C_4$$  
+The network configurations when arranged according to the difference in test accuracy with LB and SB methods will fall into: $$F_1<C_2<C_1<C_3<F_2<C_4$$  
 Now, take a look at the solid blue line in each of the figures.
 $$F_1$$ is the most flat of all at $$\alpha=1$$ and $$C_4$$ at $$\alpha=1$$ is a valley with long walls on both the sides.
 
@@ -279,8 +279,7 @@ Note:
 
 ## Can the traditional approaches provide a generalization bound? ##
 **Rademacher Complexity (RC) and VC-dimension**
-$$\hat{\Re}_n(H)=E_{\sigma}[\sup_{h \in H} \frac{1}{n} \sum_{i=1}^{n}{\sigma_ih(x_i)}]$$
-$$\sigma_1$$...$$\sigma_n$$ $$\in$$ {$$\pm 1$$} i.i.d. uniform random binary labels.  
+$$\hat{\Re}_n(H)=E_{\sigma}[\sup_{h \in H} \frac{1}{n} \sum_{i=1}^{n}{\sigma_ih(x_i)}] \sigma_1...\sigma_n \in {\pm 1}$$ i.i.d. uniform random binary labels.  
 * RC measures the ability of a given hypothesis space, *H*, to fit random binary labels, $$\pm 1$$
 * Since the networks are able to fit random labels perfectly, the RC measure would close on its upper bound, $$\Re(H)\approx 1$$, and hence may fail to provide any reasonable generalization bound.
 
