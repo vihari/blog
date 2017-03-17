@@ -28,14 +28,14 @@ We only care about ReLU (Rectified Linear Units) activation function for this ma
 ## Common Image classification datasets ##
 [CIFAR10](https://www.cs.toronto.edu/~kriz/cifar.html): 60,000 images, 10 classes, 32x32 resolution, 6,000 images per class
 
-![CIFAR10](md_slides/_images/cifar10.png)
+![CIFAR10](/assets/md_slides/_images/cifar10.png)
 
 
 ## [Imagenet](http://cs.stanford.edu/people/karpathy/cnnembed/cnn_embed_1k.jpg) ##
 
 1.2 million images, 1000 classes, ~ 300x300 resolution
 
-<img alt="Imagenet" src="md_slides/_images/imagenet.jpg" style="width:500px" />
+<img alt="Imagenet" src="/assets/md_slides/_images/imagenet.jpg" style="width:500px" />
 
 ([Image courtesy](http://cs.stanford.edu/people/karpathy/cnnembed/cnn_embed_1k.jpg))
 
@@ -117,7 +117,7 @@ It is conjectured that the LB methods lack explorative properties and settle at 
 
 
 ## What are sharp and flat minimizers? [continued...] ##
-![Sharp vs Flat minimizer](md_slides/_images/lb_vs_sb/sharp_vs_flat_minimizer.png)
+![Sharp vs Flat minimizer](/assets/md_slides/_images/lb_vs_sb/sharp_vs_flat_minimizer.png)
 
 
 
@@ -125,7 +125,7 @@ It is conjectured that the LB methods lack explorative properties and settle at 
 
 Six multi-class classification network configurations are considered.
 
-![Network configurations](md_slides/_images/lb_vs_sb/network_configs.png)
+![Network configurations](/assets/md_slides/_images/lb_vs_sb/network_configs.png)
 
 
 ## Targeted experiments [continued...] ##
@@ -135,13 +135,13 @@ Six multi-class classification network configurations are considered.
 
 
 ## Targeted experiments [continued...] ##
-![Dataset sizes](md_slides/_images/lb_vs_sb/dataset_sizes.png)
+![Dataset sizes](/assets/md_slides/_images/lb_vs_sb/dataset_sizes.png)
 
 
 
 ## Recognizing the problem ##
 
-![Train and test accuracy](md_slides/_images/lb_vs_sb/train_and_test_acc.png)
+![Train and test accuracy](/assets/md_slides/_images/lb_vs_sb/train_and_test_acc.png)
 
 Note: 
 The numbers in the table are written in "mean+standard deviation" format summarized across five trails.  
@@ -150,7 +150,7 @@ Observe that the difference between LB and SB is starker in test accuracy than i
 
 
 ## Over-fitting is not the problem ##
-![Overfitting not a problem](md_slides/_images/lb_vs_sb/not_overfitting.png)
+![Overfitting not a problem](/assets/md_slides/_images/lb_vs_sb/not_overfitting.png)
 
 Note: In both SB and LB cases, the network is trained so as not to deteriorate on validation data.
 
@@ -166,7 +166,7 @@ $\alpha$=1 corresponds to the solution of large batch and $\alpha$=0 to the smal
 
 
 ## An evidence for if the sharpness of minima is a problem [continued...] ##
-![1-D Parametric plots](md_slides/_images/lb_vs_sb/param_plots.png)
+![1-D Parametric plots](/assets/md_slides/_images/lb_vs_sb/param_plots.png)
 
 Note: 
 There is an interesting correlation between the table 2 and this figure that I cannot help, but notice.  
@@ -194,14 +194,14 @@ That way both the values in full space around *x* and the sub-space spanned by t
 
 As expected, the number assigned by the metric is high in the case of LB as shown in the table below. 
 
-![Sharpness Metric on LB and SB solution](md_slides/_images/lb_vs_sb/metric_lb_sb.png)
+![Sharpness Metric on LB and SB solution](/assets/md_slides/_images/lb_vs_sb/metric_lb_sb.png)
 
 
 
 
 ## How is SB avoiding this solution? ##
 
-![Sharpness with batch size](md_slides/_images/lb_vs_sb/sharpness_batch_size.png)
+![Sharpness with batch size](/assets/md_slides/_images/lb_vs_sb/sharpness_batch_size.png)
 
 Note:
 * The blue lines in the plot above is the change in testing accuracy (The vertical axis to the left) as the batch size increases (X axis). 
@@ -263,7 +263,7 @@ How are deep networks able to generalize so well?
 
 ## Randomization tests ##
 
-![Randomization tests](md_slides/_images/nnet_gen_how/random_tests.png)
+![Randomization tests](/assets/md_slides/_images/nnet_gen_how/random_tests.png)
 
 Note:
 * Average loss of training data goes to zero irrespective of the data transformations like: random labels, random/shuffled pixels.
@@ -300,7 +300,7 @@ Experimented with three commonly used regularizers
 
 ## Are Regularizers responsible for Generalization? [continued...] ##
 
-![Do Regularizers help in Generalization](md_slides/_images/nnet_gen_how/reg_in_gen.png)
+![Do Regularizers help in Generalization](/assets/md_slides/_images/nnet_gen_how/reg_in_gen.png)
 
 Note: The networks generalize fine with no regularizers (we all know that, though).  
 The point is to rule out regularizers as "the" reason for generalization.
@@ -310,7 +310,7 @@ The point is to rule out regularizers as "the" reason for generalization.
 ## Implicit Regularizers? ##
 Two commonly used implicit regularizers are (a) early stopping (b) batch normalization.
 
-![Implicit Regularizers](md_slides/_images/nnet_gen_how/imp_reg.png)
+![Implicit Regularizers](/assets/md_slides/_images/nnet_gen_how/imp_reg.png)
 
 Note: 
 * The shaded area is what could have been gained if stopped early.
@@ -407,7 +407,7 @@ These are only my observations, but not tested with rigor.
 
 ### It did memorize the dataset ###
 
-![Loss when SGD is used](md_slides/_images/expt/cifar10_rnd_90K.png)
+![Loss when SGD is used](/assets/md_slides/_images/expt/cifar10_rnd_90K.png)
 
 Note: This is when the model is trained on CIFAR10 with randomized labels.
 
@@ -417,7 +417,7 @@ In the case when I missed the first line in the image preprocessing, the loss be
 image = image/255.
 image = tf.image.per_image_standardization(image)
 ```
-![When not properly normalized](md_slides/_images/expt/cifar_rnd_300K.png)
+![When not properly normalized](/assets/md_slides/_images/expt/cifar_rnd_300K.png)
 
 Note: Just did not converge even after 300K iterations.
 
