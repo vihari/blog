@@ -279,7 +279,10 @@ Note:
 
 ## Can the traditional approaches provide a generalization bound? ##
 **Rademacher Complexity (RC) and VC-dimension**
-$$\hat{\Re}_n(H)=E_{\sigma}[\sup_{h \in H} \frac{1}{n} \sum_{i=1}^{n}{\sigma_ih(x_i)}] \sigma_1...\sigma_n \in {\pm 1}$$ i.i.d. uniform random binary labels.  
+
+$$\hat{\Re}_n(H)=E_{\sigma}[\sup_{h \in H} \frac{1}{n} \sum_{i=1}^{n}{\sigma_ih(x_i)}] \sigma_1...\sigma_n \in {\pm 1}$$ 
+
+i.i.d. uniform random binary labels.  
 * RC measures the ability of a given hypothesis space, *H*, to fit random binary labels, $$\pm 1$$
 * Since the networks are able to fit random labels perfectly, the RC measure would close on its upper bound, $$\Re(H)\approx 1$$, and hence may fail to provide any reasonable generalization bound.
 
