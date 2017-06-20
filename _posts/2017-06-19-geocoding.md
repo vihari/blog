@@ -91,6 +91,48 @@ These are some limitations of the existing work.
   * The granularity of the recognized locations is either limited to the Wikipedia pages ([Masters thesis][shrotri-report]) or cities, states and countries ([Web a Where][webawhere] in particular).
   * Since the granularity is limited, all possible entity completions can be obtained by a simple lookup in the gazette which is not scalable. Imagine obtaining all possible unambiguous completions for "Dominos Pizza" or "State Bank of India".
 
+Taking a little detour from Geo-coding, a lot of research went into linking entities.
+Of particular interest to me are the ones that does query expansion of entities in order to disambiguate them.
+
+## [Linking Entities to a Knowledge Base with Query Expansion][emnlp11]
+This work published in EMNLP '11 exploits the idea of entity expansion to generate several different variants of a mention to help find all candidate linkages.
+For example, NYC is expanded to New York City using Wikipedia redirects, *Harry* is expanded to a more complete version: "Harry Potter" mentioned in the same document. 
+They also use the query expansion idea to augment the entity with the local/global context words to be able to disambiguate.
+
+### Query expansion for generating candidate entities. 
+
+If the mention is a under-specified one like *Mark (Person)*, or *Rampur (Place)* then there might be too many matches for these spots in the knowledge-base.
+For this reason, they are augmented with the local context.
+In the case of *Person* and *ORG*, variants are generated from other named entities in the document whose sub-string is the spot.
+In the case of *place*, the document may contain the mention of state, country, region subsuming the spot's location. 
+For this reason, the variants for the spot is the set of concatenation with each of the named location entity in the document.
+
+Below is an example of generating variants for place related spot.
+
+**Query name string**: Mobile  
+**Query document**: The site is near Mount Vernon in the Calvert community on the Tombigbee River, some 25 miles (40 kilometers) north of Mobile. It's on a river route to the Gulf of Mexico and near Mobile's rails and interstates. Along with tax breaks and 400 million (euro297 million) in financial incentives, Alabama offered a site with a route to a Brazil plant that will provide slabs for processing in Mobile.  
+**Alternative Query Strings**:
+Mobile, Mobile Mount Vernon, Mobile Calvert, Mobile River, Mobile Mexico, Mobile Alabama, Mobile Brazil  
+[Example copied from the paper]
+
+Also, they have used an external knowledge-base such as redirects table from Wikipedia to obtain possible variants for names like *Master Blaster* for *Sachin Tendulkar* and also to help with acronyms.
+
+### Query expansion for ranking candidate entities
+
+Given a query Q and the entity in the knowledge-base E, they use KL divergence to measure the distance and score. 
+
+$$s(E, Q) = -Div(E, Q) = -\sum_{w\in V}{P(w/\theta_Q)log(\frac{P(w/\theta_Q)}{P(w/\theta_E)})}$$
+
+Where $$\theta_Q$$ and $$\theta_E$$ are query and entity language models, basically they are multinomial probability distributions.
+The idea is to enhance the query and entity language model with the local/global context to do better at ranking.
+
+They borrowed the idea of query expansion with relevance feedback from Information retrieval in order to expand the query language model.
+
+$$P(w/{\theta_Q}^{L}) = \alpha p(w/\theta_Q) + (1-\alpha)p(w/\theta_{D_Q})$$
+
+They have experimented with some variants on how the document's language model is generated: just the named entities, named entities weighted based on position from the spot.
+
+[emnlp11]: http://www.aclweb.org/anthology/D11-1074 "Linking Entities to a Knowledge Base with Query Expansion"
 [shrotri-report]: https://drive.google.com/file/d/0B7-JQZLBkT1AVnQ0dHdYeHN5QU9pOFlPUWJzZ1Q3b290UWNB/view?usp=sharing "Application of Click Logs in Geosensitive Query Processing"
 [tkde17-clicklogs]: http://ieeexplore.ieee.org/document/7922603/ "Large-scale Location Prediction for Web Pages"
 [gir04]: http://dl.acm.org/citation.cfm?id=1096991 "Detecting geographic locations from web resources"
