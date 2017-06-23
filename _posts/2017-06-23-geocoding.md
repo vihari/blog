@@ -132,6 +132,75 @@ $$P(w/{\theta_Q}^{L}) = \alpha p(w/\theta_Q) + (1-\alpha)p(w/\theta_{D_Q})$$
 
 They have experimented with some variants on how the document's language model is generated: just the named entities, named entities weighted based on position from the spot.
 
+Using the query expansion idea, they have reported a better recall when just using the blind match with just the entity mention.
+
+Also, the augmentation of the query language model with the local context did better at disambiguation.
+
+## [Automated Geocoding of textual documents: A survey of current approaches][geocode-survey]
+A survey published in GIS proceedings of 2017.
+This is a survey on methods to assign a location to a textual document and it mostly pertained to assigning location to short text like tweets.
+The task of assigning a location to a given document is handled very differently from linking each entity mention.
+Since linking each entity mention is not of interest, in a nutshell, none of the methods exploit the spatial proximity of linked entities to disambiguate.
+
+Apart from Web-a-Where and, Woodruff and Plaunt, another classic from '94, the survey focused on mostly language modelling approaches.
+The language modelling techniques aim to learn a language model corresponding to each geographic region, border-lining computation social linguistics.
+While some models learn markovian models over the language, some other went on to finding the geo-related words to the extent that Adams and Janowicz (2012), trained a Latent Dirichlet model (LDA) to find latent topics over corpus of documents D associated with geo-spatial coordinates.
+The closest they got to exploiting the spatial proximity is at sampling of words based on geographical density, more formally:
+
+$$GeoDen(w_i) = \frac{\sum_{C_j\in C^{w_i}}{P(C_j/w_i)}}{|C^{w_i}|*\frac{\sum_{\{C_j, C_k: C_j\in C^{w_i}, C_k\in C^{w_i}, j\neq k\}}{dist(C_j, C_k)}}{|C^{w_i}|-1}}$$
+
+The scoring function, GeoDen(w), is used to identify words that are geo-indicative. 
+
+They next discussed discriminative classifiers to do the same and found the to be better.
+In the context of the problem for which I am doing literature survey for, this abridged version is of my only interest.
+
+## [Location Name Disambiguation Exploiting Spatial Proximity and Temporal Consistency][socialnlp15]
+This is a paper published in 2015 at *SocialNLP 2015@NAACL-HLT*.
+I found this paper a little loose and hence doubt its contribution and completeness. 
+
+In the related work section, they do not present any work that also exploits spatial proximity, according to them it is a novel feature.
+This section focused half the time on models that find location sensitive words based on *Information Gain* or *GeoDen*(above) like metrics and another half on works that made good use of locations from tweets as a motivation.
+
+They generated a training dataset with some high accuracy heuristics on Tweets with GIS data.
+They have collected all possible locations and location mentions from Japan Wikipedia. 
+For each location variant, they have an SVM classifier trained which finds the right entity.
+The features for such a classifier are lexical: bag of words and frequency of other location entities in the document (tweet) along with spatial proximity features. 
+They are the distance of each candidate entity for an ambiguous mention to each of the unambiguous mentions in the same tweet and tweets in a time slice from past.
+
+## [Location Disambiguation in Local Searches Using Gradient Boosted Decision Trees (Industrial Paper)][gbt]
+In a nutshell, this work disambiguates the query answer based on Gradient boosting on a training dataset with features: (1) distance from the user's location (2) number of businesses contained in a given location (3) number of search hits for a given location, indicated the popularity of the place.
+
+There is nothing in the method, but the related work gave some good pointers to the previous work.
+
+## A WordNet like dataset for geographical entities
+**While reading these papers, I stumbled into a great resource called: GeoWordNet [writeup on it][geowordnet-paper]; Which is pretty much like WordNet, but for Geographical entities.**
+
+## [Map-based vs. Knowledge-based Toponym Disambiguation][spatial08]
+This short paper from 2008 is the oldest ones I found that used spatial proximity to disambiguate.
+They tried two approaches one based on measuring the distances on the map and other on finding the disambiguations that finds dense clusters in the GeoWordNet like resource.
+
+Map-based approaches finds a mean over all unambiguous mentions and possible resolutions of all the ambiguous mentions such that no location is beyond the 2$$\sigma$$ distance from the center.
+They showed that this method works best when there is enough context i.e. the entire document rather than a sentence or paragraph.
+Also, the method failed to perform better than knowledge based method for reasons that are not analyzed in the paper. 
+
+## [][italian-np]
+The algorithm in a nutshell
+
+1. Identify the next ambiguous toponym t with senses S = $$(s_1, \cdots , s_n)$$
+2. Find all toponyms tc in context;
+3. Add to the context all senses C = $$(c_1, \cdots , c_m)$$ of the toponyms in context (if a context toponym has been already disambiguated, add to C only that sense);
+4. $$\forall c_i \in C, \forall s_j \in S$$ calculate the map distance $$d_M(c_i, s_j)$$ and text distance $$d_T(c_i, s_j)$$;
+5. Combine frequency count $$F(c_i)$$ with distances in order to calculate, for all $$s_j$$ : $$F_i(s_j ) = \sum_{c_i\in C}{\frac{F(c_ii)}{(d_M(c_i,s_j)\cdot d_T (c_i,s_j))^2}}$$ ;
+6. Resolve t by assigning it the sense s = $$arg_{s_j\in S} max F_i(s_j)$$.
+7. Move to next toponym; if there are no more toponyms:
+stop.
+
+[italian-np]: http://dl.acm.org/citation.cfm?id=1722099 "Grounding Toponyms in an Italian Local News Corpus"
+[spatial08]: http://dl.acm.org/citation.cfm?id=1460011 "Map-based vs. Knowledge-based Toponym Disambiguation"
+[geowordnet-paper]: http://livingknowledge.europarchive.org/images/publications/GeoWordNet.pdf "GeoWordNet: a resource for geo-spatial applications"
+[gbt]: http://www.research.att.com/export/sites/att_labs/techdocs/TD_100100.pdf "Location Disambiguation in Local Searches Using Gradient Boosted Decision Trees (Industrial Paper)"
+[socialnlp15]: http://www.aclweb.org/anthology/W15-1701 "Location Name Disambiguation Exploiting Spatial Proximity and Temporal Consistency"
+[geocode-survey]: http://onlinelibrary.wiley.com/doi/10.1111/tgis.12212/abstract "Automated Geocoding of textual documents: A survey of current approaches"
 [emnlp11]: http://www.aclweb.org/anthology/D11-1074 "Linking Entities to a Knowledge Base with Query Expansion"
 [shrotri-report]: https://drive.google.com/file/d/0B7-JQZLBkT1AVnQ0dHdYeHN5QU9pOFlPUWJzZ1Q3b290UWNB/view?usp=sharing "Application of Click Logs in Geosensitive Query Processing"
 [tkde17-clicklogs]: http://ieeexplore.ieee.org/document/7922603/ "Large-scale Location Prediction for Web Pages"
