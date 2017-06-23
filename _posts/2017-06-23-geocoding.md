@@ -183,7 +183,7 @@ Map-based approaches finds a mean over all unambiguous mentions and possible res
 They showed that this method works best when there is enough context i.e. the entire document rather than a sentence or paragraph.
 Also, the method failed to perform better than knowledge based method for reasons that are not analyzed in the paper. 
 
-## [][italian-np]
+## [Grounding Toponyms in an Italian Local News Corpus][italian-np]
 The algorithm in a nutshell
 
 1. Identify the next ambiguous toponym t with senses S = $$(s_1, \cdots , s_n)$$
